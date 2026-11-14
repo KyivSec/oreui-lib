@@ -14,7 +14,7 @@ public final class OreHudStatTest {
     public static final int HUNGER_COLOR = 0xFFC5A477;
     public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(OreUi.ID, "stat_test_hud");
     public static final OreHudLayer LAYER = new OreHudLayer(ID, OreHudStatTest::build)
-            .enabled(false).fillScreen().panel(false);
+            .enabled(false).fillScreen().panel(false).showWithScreens(OreHudScreen.CHAT);
 
     private OreHudStatTest() {}
 

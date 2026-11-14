@@ -11,7 +11,7 @@ HUD layers use NeoForge's native GUI-layer registration. They do not open a `Scr
 
 ### Live health/hunger test
 
-`/oreui hud test` toggles a separate display-only HUD with a **red health bar** and a **light-brown hunger bar**. It divides the entire GUI area into a logical 5×5 grid (no visible grid lines), placing both bars in the upper-left cell with four-pixel insets. The grid follows window resizing and GUI scale; the other 24 cells stay empty. Bars show live current/maximum values: health uses the player's current maximum health and hunger uses 20 food points. They only read client player state, leave vanilla HUD bars intact, and never capture input or change stats. F1 and open screens hide the test normally. Repeat the command to hide it, or use `/oreui hud off` to hide both built-in HUD demos.
+`/oreui hud test` toggles a separate display-only HUD with a **red health bar** and a **light-brown hunger bar**. It divides the entire GUI area into a logical 5×5 grid (no visible grid lines), placing both bars in the upper-left cell with four-pixel insets. The grid follows window resizing and GUI scale; the other 24 cells stay empty. Bars show live current/maximum values: health uses the player's current maximum health and hunger uses 20 food points. They only read client player state, leave vanilla HUD bars intact, and never capture input or change stats. The test stays visible while typing in chat, but hides in inventories, pause/other menus, on the main menu, and with F1. Repeat the command to hide it, or use `/oreui hud off` to hide both built-in HUD demos.
 
 ## Registering a layer
 
@@ -34,6 +34,20 @@ Nine anchors and explicit safe-area insets keep panels inside the GUI bounds. Sa
 `fillScreen()` uses the full GUI rectangle without anchor/safe-area insets, useful for responsive root grids such as the 5×5 stat test. A later `size(width,height)` restores normal anchored sizing. Use `panel(false)` for transparent screen-sized layouts.
 
 By default layers require a world/player, respect F1, hide behind screens/loading overlays and allow spectators. `showWithScreens`, `respectHideGui`, `showSpectator` and `visibleWhen` configure display policy. Input always yields to a real screen/loading overlay or an inactive window. Hidden layers suspend preview clocks without changing individual widget visibility. World changes discard old widget/preview state.
+
+### Per-screen persistence
+
+Choose which screen categories may keep a layer visible:
+
+```java
+layer.showWithScreens(OreHudScreen.CHAT); // Gameplay + chat only; inventories/menus hide it.
+layer.showWithScreens(OreHudScreen.CHAT, OreHudScreen.INVENTORY); // Also allow container screens.
+layer.showWithScreens(false); // Reset to gameplay only (the default).
+```
+
+Each call replaces the previous screen selection. Categories are `CHAT`, `INVENTORY` (survival/creative inventory and containers), `PAUSE_MENU`, `MAIN_MENU` (title screen), and `OTHER` (options, custom screens, etc.). `NONE` denotes ordinary gameplay, which remains permitted regardless of the selection. Subclasses inherit their native screen category. The existing `showWithScreens(true)` still permits all categories.
+
+Allowing a screen changes **display only**, never input ownership. Chat continues to receive typing/mouse input; any real screen cancels HUD interaction and dismisses HUD popovers. World/player availability, F1, loading-overlay and spectator policies still apply, so HUDs never render on the main menu after leaving a world, even with `showWithScreens(true)`. World changes still rebuild their content.
 
 ## Interaction safety
 

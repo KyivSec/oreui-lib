@@ -9,6 +9,7 @@ import com.kyivsec.oreui.client.style.OreTooltip;
 import com.kyivsec.oreui.client.widget.OreButton;
 import com.kyivsec.oreui.client.widget.OreDropdown;
 import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
@@ -32,7 +33,8 @@ public final class OreHudLayer {
     private OreHudAnchor anchor = OreHudAnchor.TOP_RIGHT;
     private OreGrid.Insets safeArea = OreGrid.Insets.all(8);
     private BooleanSupplier visibleWhen = () -> true;
-    private boolean enabled = true, interactive, showWithScreens, showSpectator = true, respectHideGui = true, panel = true;
+    private final Set<OreHudScreen> allowedScreens = EnumSet.noneOf(OreHudScreen.class);
+    private boolean enabled = true, interactive, showSpectator = true, respectHideGui = true, panel = true;
     private int width = 180, height = 120, offsetX, offsetY;
     private int screenWidth, screenHeight;
     private boolean dirty = true;
@@ -62,7 +64,19 @@ public final class OreHudLayer {
     }
     /** Use the entire GUI area for a responsive root grid, without anchor/safe-area insets. */
     public OreHudLayer fillScreen() { fillScreen = true; invalidateLayout(); return this; }
-    public OreHudLayer showWithScreens(boolean value) { showWithScreens = value; return this; }
+    /** Permit all screen categories, or reset to gameplay-only display. World/player are still required. */
+    public OreHudLayer showWithScreens(boolean value) {
+        allowedScreens.clear();
+        if (value) allowedScreens.addAll(EnumSet.allOf(OreHudScreen.class));
+        return this;
+    }
+    /** Replace the permitted screen categories; ordinary gameplay remains visible. */
+    public OreHudLayer showWithScreens(OreHudScreen... screens) {
+        var selected = EnumSet.noneOf(OreHudScreen.class);
+        for (var screen : Objects.requireNonNull(screens)) selected.add(Objects.requireNonNull(screen));
+        allowedScreens.clear(); allowedScreens.addAll(selected);
+        return this;
+    }
     public OreHudLayer showSpectator(boolean value) { showSpectator = value; return this; }
     public OreHudLayer respectHideGui(boolean value) { respectHideGui = value; return this; }
     public OreHudLayer panel(boolean value) { panel = value; return this; }
@@ -71,7 +85,7 @@ public final class OreHudLayer {
 
     public boolean isDisplayed(OreHudContext context) {
         return enabled && context.worldAvailable() && !context.overlayOpen()
-                && (showWithScreens || !context.screenOpen()) && (!respectHideGui || !context.hideGui())
+                && (!context.screenOpen() || allowedScreens.contains(context.screen())) && (!respectHideGui || !context.hideGui())
                 && (showSpectator || !context.spectator()) && visibleWhen.getAsBoolean();
     }
     public boolean canInteract(OreHudContext context) {

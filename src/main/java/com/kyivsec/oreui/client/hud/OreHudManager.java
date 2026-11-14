@@ -6,6 +6,11 @@ import net.minecraft.client.InputType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
@@ -50,9 +55,19 @@ public final class OreHudManager {
     public static OreHudLayer find(ResourceLocation id) { return LAYERS.get(id); }
 
     private static OreHudContext context(Minecraft minecraft) {
-        return new OreHudContext(minecraft.level != null && minecraft.player != null, minecraft.screen != null,
+        return new OreHudContext(minecraft.level != null && minecraft.player != null,
+                screenType(minecraft.screen == null ? null : minecraft.screen.getClass()),
                 minecraft.options.hideGui, minecraft.player != null && minecraft.player.isSpectator(),
                 minecraft.isWindowActive(), minecraft.getOverlay() != null);
+    }
+
+    static OreHudScreen screenType(Class<? extends Screen> screen) {
+        if (screen == null) return OreHudScreen.NONE;
+        if (ChatScreen.class.isAssignableFrom(screen)) return OreHudScreen.CHAT;
+        if (AbstractContainerScreen.class.isAssignableFrom(screen)) return OreHudScreen.INVENTORY;
+        if (PauseScreen.class.isAssignableFrom(screen)) return OreHudScreen.PAUSE_MENU;
+        if (TitleScreen.class.isAssignableFrom(screen)) return OreHudScreen.MAIN_MENU;
+        return OreHudScreen.OTHER;
     }
 
     public static boolean startInteraction(ResourceLocation id) {
