@@ -67,6 +67,14 @@ public abstract class OreScreen extends Screen {
         return addWidget(widget);
     }
 
+    protected void removeContentWidget(AbstractWidget widget) {
+        OreWidgetSupport.cancel(widget);
+        if (widget instanceof OreModelPreview preview) preview.setAnimationHostVisible(false);
+        if (getFocused() == widget) clearFocus();
+        contentWidgets.remove(widget);
+        removeWidget(widget);
+    }
+
     protected abstract void arrangeContent();
 
     @Override
@@ -98,11 +106,15 @@ public abstract class OreScreen extends Screen {
         return x >= viewport.left() && x < viewport.right() && y >= viewport.top() && y < viewport.bottom();
     }
 
+    protected boolean acceptsInput(GuiEventListener child, double x, double y) {
+        return !contentWidgets.contains(child) || inside(x, y);
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         syncScrollbar();
         for (GuiEventListener child : children()) {
-            if ((!contentWidgets.contains(child) || inside(mouseX, mouseY)) && child.mouseClicked(mouseX, mouseY, button)) {
+            if (acceptsInput(child, mouseX, mouseY) && child.mouseClicked(mouseX, mouseY, button)) {
                 if (minecraft.screen != this) {
                     cancelInteraction();
                     return true;
@@ -119,7 +131,7 @@ public abstract class OreScreen extends Screen {
 
     @Override
     public Optional<GuiEventListener> getChildAt(double mouseX, double mouseY) {
-        return super.getChildAt(mouseX, mouseY).filter(child -> !contentWidgets.contains(child) || inside(mouseX, mouseY));
+        return super.getChildAt(mouseX, mouseY).filter(child -> acceptsInput(child, mouseX, mouseY));
     }
 
     @Override
@@ -194,11 +206,7 @@ public abstract class OreScreen extends Screen {
         try {
             renderContentBackground(graphics);
             int contentMouseY = inside(mouseX, mouseY) ? mouseY : Integer.MIN_VALUE;
-            for (AbstractWidget widget : contentWidgets) {
-                if (widget.visible && widget.getBottom() >= viewport.top() && widget.getY() <= viewport.bottom()) {
-                    widget.render(graphics, mouseX, contentMouseY, partialTick);
-                }
-            }
+            renderContentWidgets(graphics, mouseX, contentMouseY, partialTick);
         } finally {
             graphics.disableScissor();
         }
@@ -215,7 +223,7 @@ public abstract class OreScreen extends Screen {
                 graphics.enableScissor(viewport.left() - 3, viewport.top(), viewport.right() + 3, viewport.bottom());
             }
             try {
-                OreWidgetSupport.outline(widget, graphics);
+                renderWidgetOutline(widget, graphics, clipped);
             } finally {
                 if (clipped) {
                     graphics.disableScissor();
@@ -223,6 +231,18 @@ public abstract class OreScreen extends Screen {
             }
         }
         renderOreTooltip(graphics, mouseX, mouseY);
+    }
+
+    protected void renderContentWidgets(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        for (AbstractWidget widget : contentWidgets) {
+            if (widget.visible && widget.getBottom() >= viewport.top() && widget.getY() <= viewport.bottom()) {
+                widget.render(graphics, mouseX, mouseY, partialTick);
+            }
+        }
+    }
+
+    protected void renderWidgetOutline(AbstractWidget widget, GuiGraphics graphics, boolean content) {
+        OreWidgetSupport.outline(widget, graphics);
     }
 
     @Override

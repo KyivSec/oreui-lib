@@ -270,6 +270,7 @@ public final class OreGrid implements Layout, Renderable {
     }
     private static boolean acceptsNested(LayoutElement element, AbstractWidget widget, double x, double y) {
         if (element instanceof OreGrid grid) return grid.acceptsInput(widget, x, y);
+        if (element instanceof OreMenuLayout menu) return menu.grid().acceptsInput(widget, x, y);
         if (element instanceof Layout layout) {
             boolean[] allowed = {false};
             layout.visitChildren(child -> { if (acceptsNested(child, widget, x, y)) allowed[0] = true; });
@@ -307,11 +308,13 @@ public final class OreGrid implements Layout, Renderable {
     }
     private static void outlineElement(LayoutElement element, GuiGraphics graphics) {
         if (element instanceof OreGrid grid) grid.renderOutlines(graphics);
+        else if (element instanceof OreMenuLayout menu) menu.grid().renderOutlines(graphics);
         else if (element instanceof Layout layout) layout.visitChildren(child -> outlineElement(child, graphics));
         else element.visitWidgets(widget -> OreWidgetSupport.outline(widget, graphics));
     }
     private static void renderElement(LayoutElement element, GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         if (element instanceof OreGrid grid) grid.render(graphics, mouseX, mouseY, partialTick);
+        else if (element instanceof OreMenuLayout menu) menu.render(graphics, mouseX, mouseY, partialTick);
         else {
             if (element instanceof Renderable renderable) renderable.render(graphics, mouseX, mouseY, partialTick);
             if (element instanceof Layout layout) layout.visitChildren(child -> renderElement(child, graphics, mouseX, mouseY, partialTick));

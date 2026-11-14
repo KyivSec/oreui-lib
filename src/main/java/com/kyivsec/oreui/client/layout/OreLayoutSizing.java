@@ -19,6 +19,7 @@ public final class OreLayoutSizing {
         width = Math.max(0, width);
         if (element instanceof AbstractWidget widget) widget.setWidth(width);
         else if (element instanceof OreGrid grid) grid.setWidth(width);
+        else if (element instanceof OreMenuLayout menu) menu.setWidth(width);
         else if (element instanceof OreColumn column) column.setWidth(width);
         else if (element instanceof OreSection section) section.setWidth(width);
         else if (element instanceof OreNavigationBar navigation) navigation.setWidth(width);
@@ -32,5 +33,7 @@ public final class OreLayoutSizing {
     public static void height(LayoutElement element, int height) {
         if (element instanceof AbstractWidget widget) widget.setHeight(Math.max(0, height));
         else if (element instanceof OreGrid grid) grid.setHeight(height);
+        else if (element instanceof OreMenuLayout menu) menu.setHeight(height);
+        else if (element instanceof OreNavigationBar navigation) navigation.fitHeight(Math.max(0, height));
     }
 }

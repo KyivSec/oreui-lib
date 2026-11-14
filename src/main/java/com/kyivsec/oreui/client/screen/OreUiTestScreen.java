@@ -5,6 +5,7 @@ import com.kyivsec.oreui.client.style.OreIcons;
 import com.kyivsec.oreui.client.style.OrePalette;
 import com.kyivsec.oreui.client.style.OreNativeIcons;
 import com.kyivsec.oreui.client.style.OreTooltip;
+import com.kyivsec.oreui.client.layout.OreMenuPresets;
 import com.kyivsec.oreui.client.widget.OreAccordion;
 import com.kyivsec.oreui.client.widget.OreImageCard;
 import com.kyivsec.oreui.client.widget.OreNavBar;
@@ -598,6 +599,11 @@ public final class OreUiTestScreen extends OreScreen {
         }));
         section(Page.NAVIGATION, "layers");
         button(Page.NAVIGATION, "modal", OrePalette.COLORED, this::openModal);
+        for (OreMenuPresets.Kind kind : OreMenuPresets.Kind.values()) {
+            add(Page.NAVIGATION, new OreButton(0, 0, 100, 28,
+                    message("presets." + kind.name().toLowerCase(Locale.ROOT)), OrePalette.GENERAL,
+                    trigger -> OreMenuDemo.open(kind, trigger::getRectangle)));
+        }
         button(Page.NAVIGATION, "popup", OrePalette.COLORED, this::openPopup);
         button(Page.NAVIGATION, "confirm", OrePalette.DESTRUCTIVE, () -> minecraft.pushGuiLayer(new OrePopupScreen(message("confirm"), popup -> {
             popup.add(new OreLabel(popup.font(), message("confirm.body"), 100));

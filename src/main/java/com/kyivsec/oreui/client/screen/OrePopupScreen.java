@@ -10,6 +10,9 @@ import com.kyivsec.oreui.client.widget.OrePixelButton;
 import com.kyivsec.oreui.client.widget.OreToggle;
 import com.kyivsec.oreui.client.style.OrePixelIcons;
 import com.kyivsec.oreui.client.style.OreFonts;
+import com.kyivsec.oreui.client.layout.OreGrid;
+import com.kyivsec.oreui.client.layout.OreMenuLayout;
+import com.kyivsec.oreui.client.layout.OreMenuPresets;
 import com.mojang.blaze3d.platform.InputConstants;
 import java.util.HashSet;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.client.gui.layouts.SpacerElement;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -165,8 +169,13 @@ public class OrePopupScreen extends OreScreen {
         panelHeight = Math.min(height - 24, contentHeight + headerHeight + 1 + actionHeight);
         panelX = source == null ? (width - panelWidth) / 2 : Mth.clamp(source.left(), 12, width - panelWidth - 12);
         panelY = source == null ? (height - panelHeight) / 2 : Mth.clamp(source.bottom() + 2, 12, height - panelHeight - 12);
-        actionTop = panelY + panelHeight - 1 - actionHeight;
-        viewport = new ScreenRectangle(panelX + 1, panelY + headerHeight, panelWidth - 2, Math.max(1, panelHeight - headerHeight - 1 - actionHeight));
+        var shell = OreMenuPresets.modal(new SpacerElement(0, 0), new SpacerElement(0, 0), new SpacerElement(0, 0),
+                new OreMenuPresets.Options(OreGrid.Insets.NONE, 0, headerHeight - 1, actionHeight, 0, 0, 0));
+        shell.setSize(Math.max(1, panelWidth - 2), Math.max(1, panelHeight - 2));
+        shell.setPosition(panelX + 1, panelY + 1);
+        actionTop = shell.bounds(OreMenuLayout.Region.FOOTER).top();
+        var body = shell.bounds(OreMenuLayout.Region.BODY);
+        viewport = new ScreenRectangle(body.left(), body.top(), body.width(), Math.max(1, body.height()));
         actionColumn.setPosition(panelX + (communityModal() ? 12 : 5), actionTop + confirmationHeight + 7);
         if (confirmation != null) {
             confirmation.setWidth(panelWidth - 2);

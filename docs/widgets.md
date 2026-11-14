@@ -85,6 +85,8 @@ Render a section background before its children, or in `OreScreen.renderContentB
 
 `OreHudLayer` hosts persistent widgets during gameplay without a screen. See [HUD integration](hud.md) for native layer registration, display policies and explicit cursor mode.
 
+`OreMenuPresets` and `OreGridScreen` provide settings, simple, split-preview, modal and anchored menu shells composed from grid regions. See [Menu presets](menu-presets.md) for the public APIs and fixed-chrome/scrolling-body behavior.
+
 `OreScreen` paints focus/selection outlines after neighboring widgets. In a plain Minecraft screen, call a widget's `renderOutline` after its siblings when their drawing could overlap the outline.
 
 ## Icons and previews
