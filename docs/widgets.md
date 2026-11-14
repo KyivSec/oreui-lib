@@ -81,6 +81,8 @@ Render a section background before its children, or in `OreScreen.renderContentB
 
 `OreDrawing` exposes `surface`, `bevel`, `field`, `track`, `raisedButton`, `buttonFaceBounds` and focus helpers. `OrePalette` supplies the five color families. `scaledText` clips overflow using screen-space scissors; do not pass pose-local coordinates to `GuiGraphics.enableScissor`.
 
+`OreGrid` provides bounded rows/columns, weighted flexible tracks, per-cell limits, padding/alignment and merged cells. See [Grid layout](grid.md) for sizing, overflow and input-clipping rules.
+
 `OreScreen` paints focus/selection outlines after neighboring widgets. In a plain Minecraft screen, call a widget's `renderOutline` after its siblings when their drawing could overlap the outline.
 
 ## Icons and previews
