@@ -85,7 +85,7 @@ public final class OreGridScreen extends OreScreen {
     protected void init() {
         ready = false; bodyWidgets.clear(); chromeWidgets.clear(); openingKeys.clear();
         body = new OreGrid(1, 1);
-        header = new OreLabel(font, title, 200);
+        header = defaultHeader(font, title);
         sidebar = new SpacerElement(0, 0); preview = new SpacerElement(0, 0);
         footer = new OreButton(0, 0, 100, 28, Component.translatable("gui.back"), OrePalette.GENERAL, button -> onClose());
         for (int key : new int[] {GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER, GLFW.GLFW_KEY_SPACE}) {
@@ -101,6 +101,14 @@ public final class OreGridScreen extends OreScreen {
         });
         ready = true;
         repositionElements();
+    }
+
+    static OreGrid defaultHeader(Font font, Component title) {
+        OreGrid header = new OreGrid(1, 1).row(0, OreGrid.Track.flex(1))
+                .padding(new OreGrid.Insets(6, 0, 6, 0));
+        header.add(new OreLabel(font, title, 200), 0, 0,
+                OreGrid.Cell.DEFAULT.align(OreGrid.Align.STRETCH, OreGrid.Align.STRETCH));
+        return header;
     }
 
     private void makeLayout() {
