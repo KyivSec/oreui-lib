@@ -1,4 +1,12 @@
 {
+  "key.categories.oreui_lib": "Ore UI Library",
+  "key.oreui_lib.hud_interact": "Toggle HUD interaction",
+  "oreui.hud.demo.title": "Ore UI / Persistent HUD",
+  "oreui.hud.demo.hint": "F7: cursor mode. Escape: exit. Remap the key in Controls.",
+  "oreui.hud.demo.progress": "Local progress",
+  "oreui.hud.demo.clicks": "Clicks: %s",
+  "oreui.hud.demo.material": "Material",
+  "oreui.hud.demo.model": "Floating block preview",
   "oreui.test.title": "Ore UI / Test Lab",
   "oreui.test.subtitle": "Tab to navigate. Escape to close. Scroll for more.",
   "oreui.test.page.buttons": "Buttons",

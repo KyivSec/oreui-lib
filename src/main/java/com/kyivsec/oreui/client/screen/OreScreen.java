@@ -1,15 +1,11 @@
 package com.kyivsec.oreui.client.screen;
 
 import com.kyivsec.oreui.client.widget.OreButton;
-import com.kyivsec.oreui.client.widget.OreEditBox;
-import com.kyivsec.oreui.client.widget.OreSlider;
-import com.kyivsec.oreui.client.widget.OreColorSquare;
-import com.kyivsec.oreui.client.widget.OreHueSlider;
 import com.kyivsec.oreui.client.widget.OreModelPreview;
 import com.kyivsec.oreui.client.widget.OreScrollbar;
-import com.kyivsec.oreui.client.widget.OreTable;
 import com.kyivsec.oreui.client.style.OreDrawing;
 import com.kyivsec.oreui.client.style.OreTooltip;
+import com.kyivsec.oreui.client.host.OreWidgetSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -167,13 +163,7 @@ public abstract class OreScreen extends Screen {
         setDragging(false);
         scrollbar.cancelDrag();
         for (GuiEventListener child : children()) {
-            if (child instanceof OreButton button) {
-                button.cancelPress();
-            } else if (child instanceof OreColorSquare square) {
-                square.cancelDrag();
-            } else if (child instanceof OreHueSlider hue) {
-                hue.cancelDrag();
-            }
+            if (child instanceof AbstractWidget widget) OreWidgetSupport.cancel(widget);
         }
     }
 
@@ -225,21 +215,7 @@ public abstract class OreScreen extends Screen {
                 graphics.enableScissor(viewport.left() - 3, viewport.top(), viewport.right() + 3, viewport.bottom());
             }
             try {
-                if (widget instanceof OreButton button) {
-                    button.renderOutline(graphics);
-                } else if (widget instanceof OreSlider slider) {
-                    slider.renderOutline(graphics);
-                } else if (widget instanceof OreColorSquare square) {
-                    square.renderOutline(graphics);
-                } else if (widget instanceof OreHueSlider hue) {
-                    hue.renderOutline(graphics);
-                } else if (widget instanceof OreEditBox field) {
-                    field.renderOutline(graphics);
-                } else if (widget instanceof OreTable table) {
-                    table.renderOutline(graphics);
-                } else if (!(widget instanceof OreScrollbar) && widget.isFocused()) {
-                    OreDrawing.focus(graphics, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight());
-                }
+                OreWidgetSupport.outline(widget, graphics);
             } finally {
                 if (clipped) {
                     graphics.disableScissor();

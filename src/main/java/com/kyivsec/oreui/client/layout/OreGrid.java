@@ -1,5 +1,6 @@
 package com.kyivsec.oreui.client.layout;
 
+import com.kyivsec.oreui.client.host.OreWidgetSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -292,6 +293,22 @@ public final class OreGrid implements Layout, Renderable {
                     hovered ? mouseY : Integer.MIN_VALUE, partialTick); }
             finally { if (clip) graphics.disableScissor(); }
         }
+        renderOutlines(graphics);
+    }
+
+    public void renderOutlines(GuiGraphics graphics) {
+        for (Entry entry : entries) {
+            boolean clip = entry.cell.overflow == Overflow.CLIP;
+            if (clip) graphics.enableScissor(entry.bounds.left(), entry.bounds.top(), entry.bounds.right(), entry.bounds.bottom());
+            try {
+                outlineElement(entry.element, graphics);
+            } finally { if (clip) graphics.disableScissor(); }
+        }
+    }
+    private static void outlineElement(LayoutElement element, GuiGraphics graphics) {
+        if (element instanceof OreGrid grid) grid.renderOutlines(graphics);
+        else if (element instanceof Layout layout) layout.visitChildren(child -> outlineElement(child, graphics));
+        else element.visitWidgets(widget -> OreWidgetSupport.outline(widget, graphics));
     }
     private static void renderElement(LayoutElement element, GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         if (element instanceof OreGrid grid) grid.render(graphics, mouseX, mouseY, partialTick);

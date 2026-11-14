@@ -122,6 +122,8 @@ def verifyArtifact = tasks.register('verifyArtifact') {
             assert metadata.count('type="optional"') == 1 : 'Expected optional Curios compatibility'
             assert archive.getJarEntry('LICENSE') != null : 'Missing code license'
             assert archive.getJarEntry('THIRD-PARTY-NOTICES.md') != null : 'Missing design attribution'
+            assert metadata.contains('config="oreui_lib.mixins.json"') : 'Missing client input hook registration'
+            assert archive.getJarEntry('oreui_lib.mixins.json') != null : 'Missing client input hook configuration'
             assert !archive.entries().toList().any {
                 !it.directory && it.name.startsWith('assets/oreui_lib/font/')
             } : 'Unexpected bundled font resources; run clean build'

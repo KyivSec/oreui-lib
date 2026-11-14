@@ -27,6 +27,7 @@ public abstract class OreModelPreview extends AbstractWidget {
     private float modelScale = 1;
     private boolean background = true;
     private boolean animationRunning = true;
+    private boolean animationHostVisible = true;
     private long animationTicks;
     private final OrePreviewAnimationClock animationClock = new OrePreviewAnimationClock();
     private final LongSupplier nanoTime;
@@ -103,12 +104,22 @@ public abstract class OreModelPreview extends AbstractWidget {
         return animationRunning;
     }
 
+    /** Lets a screen-independent host suspend its entire layer without changing the widget's own visibility. */
+    public final void setAnimationHostVisible(boolean visible) {
+        if (animationHostVisible != visible) {
+            long now = nanoTime.getAsLong();
+            advanceAnimation(now);
+            animationHostVisible = visible;
+            advanceAnimation(now);
+        }
+    }
+
     public final void tick() {
         advanceAnimation(nanoTime.getAsLong());
     }
 
     private void advanceAnimation(long now) {
-        var step = animationClock.advance(now, animationRunning && visible);
+        var step = animationClock.advance(now, animationRunning && visible && animationHostVisible);
         for (int i = 0; i < step.ticks(); i++) {
             animationTicks++;
             tickModel();

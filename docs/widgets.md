@@ -83,6 +83,8 @@ Render a section background before its children, or in `OreScreen.renderContentB
 
 `OreGrid` provides bounded rows/columns, weighted flexible tracks, per-cell limits, padding/alignment and merged cells. See [Grid layout](grid.md) for sizing, overflow and input-clipping rules.
 
+`OreHudLayer` hosts persistent widgets during gameplay without a screen. See [HUD integration](hud.md) for native layer registration, display policies and explicit cursor mode.
+
 `OreScreen` paints focus/selection outlines after neighboring widgets. In a plain Minecraft screen, call a widget's `renderOutline` after its siblings when their drawing could overlap the outline.
 
 ## Icons and previews

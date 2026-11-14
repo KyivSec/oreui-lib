@@ -12,6 +12,9 @@ description='''${mod_description}'''
 credits="Ore UI design: Miljö AB and Turóczi Ádám (CC BY 4.0). Source and license links: THIRD-PARTY-NOTICES.md in this JAR."
 displayTest="IGNORE_ALL_VERSION"
 
+[[mixins]]
+config="oreui_lib.mixins.json"
+
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"

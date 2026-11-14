@@ -10,6 +10,8 @@ This is a client command, available without cheats or operator permission. Openi
 
 The screen fills the Minecraft window's GUI area; it does not change the operating system's fullscreen setting. It uses the standard screen pause behavior in singleplayer.
 
+For a separate persistent in-game demonstration, use `/oreui hud` and F7 (or `/oreui hud edit`) for cursor mode. This does not open the test screen or pause gameplay; see [HUD integration](hud.md).
+
 ## Controls
 
 - The navigation sidebar selects ten pages. A light top NavBar provides Back, the centered title and a page-count action that opens Navigation. There is no About page; design credits remain in the mod metadata and packaged third-party notices.

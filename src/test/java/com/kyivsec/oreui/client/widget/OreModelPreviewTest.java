@@ -90,4 +90,23 @@ class OreModelPreviewTest {
         assertEquals(1, preview.modelTicks);
         assertEquals(0.05F, preview.seconds(), 1e-6);
     }
+
+    @Test
+    void aHiddenHudHostSuspendsAnimationWithoutOverwritingWidgetVisibility() {
+        AtomicLong time = new AtomicLong();
+        Preview preview = new Preview(time);
+        preview.tick();
+        time.set(25_000_000);
+        preview.frame(0);
+        preview.setAnimationHostVisible(false);
+        time.set(5_000_000_000L);
+        preview.tick();
+        assertTrue(preview.visible);
+        assertEquals(0, preview.modelTicks);
+        assertEquals(0.025F, preview.seconds(), 1e-6);
+        preview.setAnimationHostVisible(true);
+        time.set(5_025_000_000L);
+        preview.frame(0);
+        assertEquals(1, preview.modelTicks);
+    }
 }

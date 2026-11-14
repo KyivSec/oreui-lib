@@ -6,6 +6,8 @@ import com.kyivsec.oreui.client.style.OrePixelIcons;
 import com.kyivsec.oreui.client.style.OrePalette;
 import java.util.List;
 import java.util.function.IntConsumer;
+import java.util.function.Consumer;
+import java.util.Objects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,6 +19,12 @@ public class OreDropdown extends OreButton {
     private final IntConsumer onChange;
     private int selectedIndex;
     private boolean opened;
+    private Consumer<OreDropdown> menuOpener = owner -> Minecraft.getInstance().pushGuiLayer(new OreDropdownScreen(owner));
+
+    /** A screen-independent host can supply its own anchored popover without changing selection semantics. */
+    public void setMenuOpener(Consumer<OreDropdown> opener) {
+        menuOpener = Objects.requireNonNull(opener);
+    }
 
     public OreDropdown(Component label, List<Component> options, int selectedIndex, IntConsumer onChange) {
         super(0, 0, 100, 33, label, OrePalette.GENERAL, button -> {});
@@ -92,6 +100,7 @@ public class OreDropdown extends OreButton {
     public void onPress() {
         if (!active || !visible || opened) return;
         opened = true;
-        Minecraft.getInstance().pushGuiLayer(new OreDropdownScreen(this));
+        try { menuOpener.accept(this); }
+        catch (RuntimeException exception) { opened = false; throw exception; }
     }
 }
