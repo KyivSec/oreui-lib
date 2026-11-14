@@ -1,4 +1,11 @@
 {
+  "oreui.preview.demo.open": "OreUI previews",
+  "oreui.preview.demo.title": "OreUI Lib / Standalone player previews",
+  "oreui.preview.demo.description": "Native models with supplied textures. No world or player needed.",
+  "oreui.preview.demo.classic": "Classic (Steve)",
+  "oreui.preview.demo.slim": "Slim (Alex)",
+  "oreui.preview.demo.animation": "Animate",
+  "oreui.preview.demo.swing": "Swing",
   "oreui.stat.value": "%s: %s/%s",
   "oreui.hud.test.health": "Health",
   "oreui.hud.test.hunger": "Hunger",

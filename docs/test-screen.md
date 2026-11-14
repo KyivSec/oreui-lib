@@ -12,6 +12,8 @@ The screen fills the Minecraft window's GUI area; it does not change the operati
 
 For a separate persistent in-game demonstration, use `/oreui hud` and F7 (or `/oreui hud edit`) for cursor mode. This does not open the test screen or pause gameplay; see [HUD integration](hud.md).
 
+The main menu's **OreUI previews** button opens a separate classic/slim standalone player-model demo, with no world or local player required. See [3D previews](3d-previews.md) for appearance and resource-lifecycle APIs; the gallery's equipment/Curios example continues to use the entity-based renderer.
+
 ## Controls
 
 - The navigation sidebar selects ten pages. A light top NavBar provides Back, the centered title and a page-count action that opens Navigation. There is no About page; design credits remain in the mod metadata and packaged third-party notices.

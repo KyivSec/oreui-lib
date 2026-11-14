@@ -1,11 +1,21 @@
 package com.kyivsec.oreui.client.widget;
 
 import com.kyivsec.oreui.client.compat.PlayerEquipmentCompat;
+import com.kyivsec.oreui.client.preview.OrePlayerAppearance;
+import com.kyivsec.oreui.client.preview.OrePlayerModel;
+import com.kyivsec.oreui.client.preview.OrePlayerPose;
+import com.kyivsec.oreui.client.preview.OrePlayerRenderContext;
+import com.kyivsec.oreui.client.preview.OreStandalonePlayerRenderer;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.LongSupplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -38,11 +48,53 @@ public class OrePlayerPreview extends OreModelPreview {
     private InteractionHand swingHand = InteractionHand.MAIN_HAND;
     private boolean pendingSwing;
     private InteractionHand usingHand;
+    private OrePlayerAppearance appearance;
+    private final OreStandalonePlayerRenderer standalone = new OreStandalonePlayerRenderer();
+    private final List<Consumer<OrePlayerRenderContext>> standaloneLayers = new ArrayList<>();
+    private BiConsumer<OrePlayerModel, OrePlayerPose> poseModifier = (model, pose) -> {};
+    private int standaloneSwingTicks = -1;
 
     public OrePlayerPreview(Component label, int height) {
         super(label, height);
         setRotation(-10, -25, 0);
     }
+
+    /** Standalone native model path: no world, local player, profile lookup or fake entity. */
+    public OrePlayerPreview(Component label, int height, OrePlayerAppearance appearance) {
+        this(label, height);
+        setAppearance(appearance);
+    }
+
+    OrePlayerPreview(Component label, int height, OrePlayerAppearance appearance, LongSupplier clock) {
+        super(label, height, clock);
+        setRotation(-10, -25, 0);
+        setAppearance(appearance);
+    }
+
+    /** Selects standalone rendering; appearances and their borrowed texture IDs may be shared. */
+    public void setAppearance(OrePlayerAppearance appearance) {
+        this.appearance = Objects.requireNonNull(appearance);
+        player = null;
+    }
+    public OrePlayerAppearance getAppearance() { return appearance; }
+    public boolean isStandalone() { return appearance != null; }
+
+    /** Returns to the original local-profile/entity renderer; stored equipment snapshots are retained. */
+    public void useEntityRendering() {
+        appearance = null;
+        standaloneSwingTicks = -1;
+        standalone.clear();
+    }
+
+    public void setStandaloneModelFactory(OrePlayerModel.Factory factory) { standalone.setFactory(factory); }
+    public void setStandalonePoseModifier(BiConsumer<OrePlayerModel, OrePlayerPose> modifier) {
+        poseModifier = Objects.requireNonNull(modifier);
+    }
+    public void addStandaloneLayer(Consumer<OrePlayerRenderContext> layer) { standaloneLayers.add(Objects.requireNonNull(layer)); }
+    public boolean removeStandaloneLayer(Consumer<OrePlayerRenderContext> layer) { return standaloneLayers.remove(layer); }
+
+    /** Drops preview-owned model/entity caches, not appearances, borrowed textures or caller-owned handles. */
+    public void releaseRenderResources() { player = null; standalone.clear(); }
 
     public void setMainHand(ItemStack item) {
         setEquipment(EquipmentSlot.MAINHAND, item);
@@ -114,7 +166,8 @@ public class OrePlayerPreview extends OreModelPreview {
         swingHand = Objects.requireNonNull(hand);
         pendingSwing = true;
         stopUsingItem();
-        if (player != null) startSwing();
+        if (isStandalone()) startStandaloneSwing();
+        else if (player != null) startSwing();
     }
 
     public void setSwingLoop(boolean loop) {
@@ -171,8 +224,26 @@ public class OrePlayerPreview extends OreModelPreview {
         swingCooldown = 12;
     }
 
+    private void startStandaloneSwing() {
+        standaloneSwingTicks = 0;
+        pendingSwing = false;
+        swingCooldown = 12;
+    }
+
+    OrePlayerPose standalonePose(float partialTick, float lookYaw, float lookPitch) {
+        float swing = standaloneSwingTicks < 0 ? 0 : Math.min(1, (standaloneSwingTicks + partialTick) / 6.0F);
+        HumanoidArm arm = swingHand == InteractionHand.MAIN_HAND ? mainArm : mainArm.getOpposite();
+        return new OrePlayerPose(animationSeconds(), walking, crouching, lookYaw, lookPitch, arm, swing);
+    }
+
     @Override
     protected void tickModel() {
+        if (isStandalone()) {
+            if (swingCooldown > 0) swingCooldown--;
+            if (standaloneSwingTicks >= 0 && ++standaloneSwingTicks >= 6) standaloneSwingTicks = -1;
+            if (pendingSwing || swingLoop && swingCooldown == 0) startStandaloneSwing();
+            return;
+        }
         if (!preparePlayer()) return;
         if (swingCooldown > 0) swingCooldown--;
         if (swingLoop && swingCooldown == 0 && usingHand == null) startSwing();
@@ -185,7 +256,7 @@ public class OrePlayerPreview extends OreModelPreview {
 
     @Override
     protected boolean hasModel() {
-        return preparePlayer();
+        return isStandalone() || preparePlayer();
     }
 
     @Override
@@ -202,6 +273,17 @@ public class OrePlayerPreview extends OreModelPreview {
     protected void renderModel(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         float lookYaw = followMouse && isHovered() ? Mth.clamp((getX() + width / 2.0F - mouseX) * 0.5F, -35, 35) : 0;
         float lookPitch = followMouse && isHovered() ? Mth.clamp((mouseY - getY() - height / 2.0F) * 0.5F, -25, 25) : 0;
+        if (isStandalone()) {
+            standalone.render(graphics, Minecraft.getInstance().getEntityModels(), appearance,
+                    standalonePose(partialTick, lookYaw, lookPitch), poseModifier, context -> {
+                        for (var layer : List.copyOf(standaloneLayers)) {
+                            graphics.pose().pushPose();
+                            try { layer.accept(context); }
+                            finally { graphics.pose().popPose(); }
+                        }
+                    });
+            return;
+        }
         player.yHeadRot = lookYaw;
         player.setXRot(lookPitch);
         graphics.pose().translate(0, -player.getBbHeight() / 2.0F, 0);

@@ -87,6 +87,8 @@ Render a section background before its children, or in `OreScreen.renderContentB
 
 `OreStatBar(label, color, currentSupplier, maximumSupplier)` is a compact display-only colored value/maximum bar. It samples live values for rendering/narration, clamps invalid/out-of-range values, and supports native grid resizing. `/oreui hud test` demonstrates red health and light-brown hunger bars.
 
+`OrePlayerPreview` accepts an `OrePlayerAppearance` for standalone classic/slim native model rendering, including on the main menu without a world/player. Its original entity/equipment/Curios path remains available. See [3D previews](3d-previews.md) for appearances, texture ownership, resource reloads and custom part/layer hooks. The main menu's **OreUI previews** button opens the standalone demonstration.
+
 `OreMenuPresets` and `OreGridScreen` provide settings, simple, split-preview, modal and anchored menu shells composed from grid regions. See [Menu presets](menu-presets.md) for the public APIs and fixed-chrome/scrolling-body behavior.
 
 `OreScreen` paints focus/selection outlines after neighboring widgets. In a plain Minecraft screen, call a widget's `renderOutline` after its siblings when their drawing could overlap the outline.
