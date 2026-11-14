@@ -9,6 +9,10 @@ HUD layers use NeoForge's native GUI-layer registration. They do not open a `Scr
 - **Escape** closes a HUD popover first, then exits cursor mode. Tab/Shift+Tab traverses widgets. Sliders retain their native adjustment-mode controls.
 - The demo has progress, a slider, a counter, an anchored dropdown and an isolated floating block preview. All values are local UI state.
 
+### Live health/hunger test
+
+`/oreui hud test` toggles a separate display-only HUD with a **red health bar** and a **light-brown hunger bar**. It divides the entire GUI area into a logical 5×5 grid (no visible grid lines), placing both bars in the upper-left cell with four-pixel insets. The grid follows window resizing and GUI scale; the other 24 cells stay empty. Bars show live current/maximum values: health uses the player's current maximum health and hunger uses 20 food points. They only read client player state, leave vanilla HUD bars intact, and never capture input or change stats. F1 and open screens hide the test normally. Repeat the command to hide it, or use `/oreui hud off` to hide both built-in HUD demos.
+
 ## Registering a layer
 
 Call from your client `RegisterGuiLayersEvent` listener:
@@ -26,6 +30,8 @@ OreHudManager.register(event, layer);
 `registerAbove` / `registerBelow` accept an already registered vanilla/own layer ID for ordering; a null reference means above/below all. IDs must be unique. Keep the layer instance to change `enabled`, size, anchor, offset or visibility policy. `content()` returns its lazily built grid; call `invalidateLayout()` after structural or height-changing edits. Content builders run after a world/resources are available and are recreated on world changes, so do not capture old world/player objects.
 
 Nine anchors and explicit safe-area insets keep panels inside the GUI bounds. Safe areas are configurable; the library does not infer every vanilla/other-mod HUD's occupied rectangle. Oversized panels clamp to the available area and scroll overflowing content. Cell hit testing matches clipping. Scroll/drag capture and final focus outlines use the same native widgets/helpers as screens.
+
+`fillScreen()` uses the full GUI rectangle without anchor/safe-area insets, useful for responsive root grids such as the 5×5 stat test. A later `size(width,height)` restores normal anchored sizing. Use `panel(false)` for transparent screen-sized layouts.
 
 By default layers require a world/player, respect F1, hide behind screens/loading overlays and allow spectators. `showWithScreens`, `respectHideGui`, `showSpectator` and `visibleWhen` configure display policy. Input always yields to a real screen/loading overlay or an inactive window. Hidden layers suspend preview clocks without changing individual widget visibility. World changes discard old widget/preview state.
 

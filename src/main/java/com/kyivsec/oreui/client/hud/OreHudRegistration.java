@@ -10,6 +10,9 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 @EventBusSubscriber(modid = OreUi.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class OreHudRegistration {
     private OreHudRegistration() {}
-    @SubscribeEvent public static void layers(RegisterGuiLayersEvent event) { OreHudManager.register(event, OreHudDemo.LAYER); }
+    @SubscribeEvent public static void layers(RegisterGuiLayersEvent event) {
+        OreHudManager.register(event, OreHudDemo.LAYER);
+        OreHudManager.register(event, OreHudStatTest.LAYER);
+    }
     @SubscribeEvent public static void keys(RegisterKeyMappingsEvent event) { OreHudManager.registerInteractionKey(event); }
 }

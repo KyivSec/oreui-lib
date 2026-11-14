@@ -36,6 +36,7 @@ public final class OreHudLayer {
     private int width = 180, height = 120, offsetX, offsetY;
     private int screenWidth, screenHeight;
     private boolean dirty = true;
+    private boolean fillScreen;
 
     public OreHudLayer(ResourceLocation id, Supplier<OreGrid> buildContent) {
         this.id = Objects.requireNonNull(id); this.buildContent = Objects.requireNonNull(buildContent);
@@ -57,8 +58,10 @@ public final class OreHudLayer {
     public OreHudLayer offset(int x, int y) { offsetX = x; offsetY = y; invalidateLayout(); return this; }
     public OreHudLayer size(int width, int height) {
         if (width < 1 || height < 1) throw new IllegalArgumentException("HUD dimensions must be positive");
-        this.width = width; this.height = height; invalidateLayout(); return this;
+        this.width = width; this.height = height; fillScreen = false; invalidateLayout(); return this;
     }
+    /** Use the entire GUI area for a responsive root grid, without anchor/safe-area insets. */
+    public OreHudLayer fillScreen() { fillScreen = true; invalidateLayout(); return this; }
     public OreHudLayer showWithScreens(boolean value) { showWithScreens = value; return this; }
     public OreHudLayer showSpectator(boolean value) { showSpectator = value; return this; }
     public OreHudLayer respectHideGui(boolean value) { respectHideGui = value; return this; }
@@ -91,7 +94,8 @@ public final class OreHudLayer {
         if (!dirty && screenWidth == width && screenHeight == height) return;
         screenWidth = width; screenHeight = height;
         closePopover();
-        var viewport = anchor.place(width, height, this.width, this.height, safeArea, offsetX, offsetY);
+        var viewport = fillScreen ? new ScreenRectangle(0, 0, Math.max(1, width), Math.max(1, height))
+                : anchor.place(width, height, this.width, this.height, safeArea, offsetX, offsetY);
         host().setViewport(viewport);
         bindDropdowns(host);
         dirty = false;

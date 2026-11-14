@@ -1,4 +1,7 @@
 {
+  "oreui.stat.value": "%s: %s/%s",
+  "oreui.hud.test.health": "Health",
+  "oreui.hud.test.hunger": "Hunger",
   "oreui.test.presets.settings": "Settings layout preset",
   "oreui.test.presets.simple": "Simple menu preset",
   "oreui.test.presets.split": "Split preview preset",

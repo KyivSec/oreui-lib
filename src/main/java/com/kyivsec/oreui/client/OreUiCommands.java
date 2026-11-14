@@ -4,6 +4,7 @@ import com.kyivsec.oreui.OreUi;
 import com.kyivsec.oreui.client.screen.OreUiTestScreen;
 import com.kyivsec.oreui.client.hud.OreHudDemo;
 import com.kyivsec.oreui.client.hud.OreHudManager;
+import com.kyivsec.oreui.client.hud.OreHudStatTest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
 import net.neoforged.api.distmarker.Dist;
@@ -26,9 +27,10 @@ public final class OreUiCommands {
                 }))
                 .then(Commands.literal("hud").executes(context -> hud(OreHudDemo::toggle))
                         .then(Commands.literal("on").executes(context -> hud(() -> OreHudDemo.LAYER.enabled(true))))
-                        .then(Commands.literal("off").executes(context -> hud(() -> {
-                            OreHudDemo.LAYER.enabled(false); OreHudManager.stopInteraction();
-                        })))
+                         .then(Commands.literal("off").executes(context -> hud(() -> {
+                            OreHudDemo.LAYER.enabled(false); OreHudStatTest.LAYER.enabled(false); OreHudManager.stopInteraction();
+                         })))
+                        .then(Commands.literal("test").executes(context -> hud(OreHudStatTest::toggle)))
                         .then(Commands.literal("edit").executes(context -> hud(OreHudDemo::edit)))));
     }
 
