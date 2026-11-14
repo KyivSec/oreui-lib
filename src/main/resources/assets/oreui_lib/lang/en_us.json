@@ -21,7 +21,7 @@
   "oreui.test.presets.apply": "Apply example",
   "oreui.test.presets.applied": "Example applied locally. No configuration was changed.",
   "oreui.test.presets.choice": "Example action %s",
-  "key.categories.oreui_lib": "Ore UI Library",
+  "key.categories.oreui_lib": "OreUI Lib",
   "key.oreui_lib.hud_interact": "Toggle HUD interaction",
   "oreui.hud.demo.title": "Ore UI / Persistent HUD",
   "oreui.hud.demo.hint": "F7: cursor mode. Escape: exit. Remap the key in Controls.",

@@ -5,7 +5,7 @@ HUD layers use NeoForge's native GUI-layer registration. They do not open a `Scr
 ## Demo
 
 - `/oreui hud` toggles the local demo; `/oreui hud on` and `off` set its visibility.
-- `/oreui hud edit` enables it and enters cursor mode. **F7** toggles cursor mode for the topmost eligible interactive Ore layer; remap this in Controls → Ore UI Library.
+- `/oreui hud edit` enables it and enters cursor mode. **F7** toggles cursor mode for the topmost eligible interactive Ore layer; remap this in Controls → OreUI Lib.
 - **Escape** closes a HUD popover first, then exits cursor mode. Tab/Shift+Tab traverses widgets. Sliders retain their native adjustment-mode controls.
 - The demo has progress, a slider, a counter, an anchored dropdown and an isolated floating block preview. All values are local UI state.
 
