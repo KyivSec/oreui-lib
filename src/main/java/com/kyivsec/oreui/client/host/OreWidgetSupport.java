@@ -20,7 +20,7 @@ public final class OreWidgetSupport {
         if (widget instanceof OreColorSquare square) square.cancelDrag();
         if (widget instanceof OreHueSlider hue) hue.cancelDrag();
         if (widget instanceof OreScrollbar scrollbar) scrollbar.cancelDrag();
-        if (widget instanceof OreSlider slider) slider.onRelease(0, 0);
+        if (widget instanceof OreSlider slider) slider.cancelDrag();
     }
 
     public static void outline(AbstractWidget widget, GuiGraphics graphics) {

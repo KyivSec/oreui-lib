@@ -1,6 +1,7 @@
 package com.kyivsec.oreui.client.hud;
 
 import com.kyivsec.oreui.client.layout.OreGrid;
+import com.kyivsec.oreui.client.widget.OreSlider;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.resources.ResourceLocation;
@@ -141,5 +142,33 @@ class OreHudTest {
         assertFalse(layer[0].hasPopover());
         layer[0].keyPressed(GLFW.GLFW_KEY_ENTER, 0, 0);
         assertTrue(layer[0].hasPopover());
+    }
+
+    @Test
+    void hidingOrDisablingAHudDismissesItsPopoverAndNeverSynthesizesSliderReleases() {
+        AtomicInteger releases = new AtomicInteger();
+        OreGrid body = new OreGrid(1, 1);
+        var slider = body.add(new OreSlider(0, 0, 100, 34, Component.literal("Slider"), 0.5, value -> {}) {
+            @Override protected void playReleaseSound() { releases.incrementAndGet(); }
+        }, 0, 0);
+        var layer = new OreHudLayer(ResourceLocation.fromNamespaceAndPath("example", "silent_cleanup"), () -> body);
+        layer.layout(320, 240);
+        slider.onClick(slider.getX() + 50, slider.getY() + 10);
+        AtomicInteger closed = new AtomicInteger();
+        layer.openPopover(new OreGrid(1, 1), () -> slider.getRectangle(), closed::incrementAndGet);
+        layer.keyPressed(GLFW.GLFW_KEY_ESCAPE, 0, 0);
+        assertFalse(layer.hasPopover());
+        assertEquals(1, closed.get());
+        layer.openPopover(new OreGrid(1, 1), () -> slider.getRectangle(), closed::incrementAndGet);
+        layer.tick(false); // Real screen opened / HUD hidden.
+        assertFalse(layer.hasPopover());
+        assertNull(layer.focusedWidget());
+        layer.openPopover(new OreGrid(1, 1), () -> slider.getRectangle(), closed::incrementAndGet);
+        layer.enabled(false); // The /oreui hud off path.
+        assertFalse(layer.hasPopover());
+        for (int tick = 0; tick < 100; tick++) layer.tick(false);
+        slider.onRelease(0, 0); // A late native release must also remain silent after cancellation.
+        assertEquals(3, closed.get());
+        assertEquals(0, releases.get());
     }
 }

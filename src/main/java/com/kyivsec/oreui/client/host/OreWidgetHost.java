@@ -121,7 +121,7 @@ public final class OreWidgetHost extends AbstractContainerEventHandler {
     @Override
     public boolean keyPressed(int key, int scan, int modifiers) {
         if (key == GLFW.GLFW_KEY_TAB) {
-            setDragging(false);
+            cancelPointerCapture();
             var candidates = children();
             boolean forward = (modifiers & GLFW.GLFW_MOD_SHIFT) == 0;
             int start = candidates.indexOf(getFocused());

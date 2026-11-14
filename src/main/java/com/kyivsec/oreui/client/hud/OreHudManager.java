@@ -70,13 +70,23 @@ public final class OreHudManager {
     }
 
     public static void stopInteraction() {
+        stopInteraction(true);
+    }
+
+    /** A screen is about to open: yield without re-grabbing the mouse or calling setScreen(null). */
+    static void screenOpening() {
+        stopInteraction(false);
+        LAYERS.values().forEach(OreHudLayer::cancelInteraction);
+    }
+
+    private static void stopInteraction(boolean restoreCapture) {
         if (editing == null) return;
         OreHudLayer old = editing;
         editing = null;
         old.cancelInteraction();
         KeyMapping.releaseAll();
         Minecraft minecraft = Minecraft.getInstance();
-        if (restoreMouse && minecraft.screen == null && minecraft.level != null && minecraft.isWindowActive()
+        if (restoreCapture && restoreMouse && minecraft.screen == null && minecraft.level != null && minecraft.isWindowActive()
                 && minecraft.getOverlay() == null) minecraft.mouseHandler.grabMouse();
         // grabMouse refreshes physical key states; do not revive keys that were typed into the HUD.
         KeyMapping.releaseAll();

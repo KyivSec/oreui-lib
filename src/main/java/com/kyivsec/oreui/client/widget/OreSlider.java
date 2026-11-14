@@ -30,8 +30,18 @@ public class OreSlider extends AbstractSliderButton {
 
     @Override
     public void onRelease(double mouseX, double mouseY) {
+        boolean wasDragging = dragging;
         dragging = false;
-        super.onRelease(mouseX, mouseY);
+        if (wasDragging) playReleaseSound();
+    }
+
+    /** Aborts pointer capture without playing the native slider's release sound or changing its value. */
+    public void cancelDrag() {
+        dragging = false;
+    }
+
+    protected void playReleaseSound() {
+        super.onRelease(0, 0);
     }
 
     @Override

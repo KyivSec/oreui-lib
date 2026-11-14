@@ -42,8 +42,16 @@ public final class OreHudLayer {
     }
     public ResourceLocation id() { return id; }
     public boolean isEnabled() { return enabled; }
-    public OreHudLayer enabled(boolean value) { enabled = value; return this; }
-    public OreHudLayer interactive(boolean value) { interactive = value; return this; }
+    public OreHudLayer enabled(boolean value) {
+        enabled = value;
+        if (!value) cancelInteraction();
+        return this;
+    }
+    public OreHudLayer interactive(boolean value) {
+        interactive = value;
+        if (!value) cancelInteraction();
+        return this;
+    }
     public OreHudLayer anchor(OreHudAnchor value) { anchor = Objects.requireNonNull(value); invalidateLayout(); return this; }
     public OreHudLayer safeArea(OreGrid.Insets value) { safeArea = Objects.requireNonNull(value); invalidateLayout(); return this; }
     public OreHudLayer offset(int x, int y) { offsetX = x; offsetY = y; invalidateLayout(); return this; }
