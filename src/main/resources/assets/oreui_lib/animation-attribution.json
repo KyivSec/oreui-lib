@@ -1,0 +1,30 @@
+{
+  "source": "User-supplied loading.png and progress.png",
+  "authorization": "Supplied by the user to replace the remaining Figma loading/progress artwork.",
+  "licenseNote": "User-provided artwork; no separate asset license is asserted here. Historical design attribution remains in THIRD-PARTY-NOTICES.md.",
+  "layout": "Vertical strip of square frames, no gaps",
+  "frameSize": 15,
+  "frameCount": 16,
+  "method": "Copied byte-for-byte without cropping, resizing, recoloring or interpolation. All frames share one fixed canvas/center during rendering.",
+  "animations": [
+    {
+      "name": "loading",
+      "sourceFile": "loading.png",
+      "resource": "textures/gui/loading.png",
+      "width": 15,
+      "height": 240,
+      "frameDurationMillis": 100,
+      "behavior": "Repeating 16-frame cycle; 9 ring pixels per frame",
+      "sha256": "331bbc6759058b02b5de37315a440f9d5bccb4d0d58eb4a1b7dbbc1aa1442b14"
+    },
+    {
+      "name": "progress",
+      "sourceFile": "progress.png",
+      "resource": "textures/gui/progress.png",
+      "width": 15,
+      "height": 240,
+      "behavior": "Frames contain 1 through 16 ring pixels; 0% draws no frame, positive progress uses ceil(progress * 16) - 1",
+      "sha256": "80f94355bbc87c560ea7433df462a327c7c5973f5b7db99903bf5acb0c006fd2"
+    }
+  ]
+}

@@ -1,0 +1,1312 @@
+﻿{
+    "source":  "User-supplied x15_icons.psd and x16_icons.psd",
+    "authorization":  "User explicitly requested cleanup and inclusion in the mod.",
+    "licenseNote":  "User-provided pixel redraws; no separate asset-license assertion is made here. Historical upstream design attribution remains in THIRD-PARTY-NOTICES.md.",
+    "method":  "Read RGB8 PSD layers, ignore hidden visibility for individual exports, crop to document canvas, preserve hard white/transparent pixels, apply the two documented grid-based redraws, and save corrected editable PSD copies with one preview layer visible.",
+    "cleanSources":  [
+                         "artwork/icons/icons-15.psd",
+                         "artwork/icons/icons-16.psd"
+                     ],
+    "icons":  [
+                  {
+                      "name":  "checkmark",
+                      "texture":  "textures/icons/native/checkmark.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  8,
+                                  "height":  6,
+                                  "x":  4
+                              },
+                      "paintedPixels":  8,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Checkmark",
+                      "sourceLayerIndex":  1,
+                      "removedOffCanvasPixels":  1,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "b8e5fa07037008a85a71ba5ea47ff5f911a94a808f1bc36c7e72946466e01709"
+                  },
+                  {
+                      "name":  "cross",
+                      "texture":  "textures/icons/native/cross.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  7,
+                                  "height":  7,
+                                  "x":  4
+                              },
+                      "paintedPixels":  13,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Cross",
+                      "sourceLayerIndex":  2,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "9a9a86ffb512e792862c14010da5ccea8bf4d9ea9d45b7424eb117f8acb77153"
+                  },
+                  {
+                      "name":  "circle",
+                      "texture":  "textures/icons/native/circle.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  7,
+                                  "height":  7,
+                                  "x":  4
+                              },
+                      "paintedPixels":  16,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Circle",
+                      "sourceLayerIndex":  3,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "7194fbb0a69647013a5f1291a8829a6ff7c5f5d3856fe86db25c44939e6c5925"
+                  },
+                  {
+                      "name":  "on",
+                      "texture":  "textures/icons/native/on.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  5,
+                                  "width":  1,
+                                  "height":  5,
+                                  "x":  7
+                              },
+                      "paintedPixels":  5,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "On",
+                      "sourceLayerIndex":  4,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "6d456503cde63a9344f350287bb535bfe3982bc7d9e2ab35c308d4b1de27438f"
+                  },
+                  {
+                      "name":  "off",
+                      "texture":  "textures/icons/native/off.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  5,
+                                  "width":  5,
+                                  "height":  5,
+                                  "x":  5
+                              },
+                      "paintedPixels":  12,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Off",
+                      "sourceLayerIndex":  5,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "c17ff712c725f4a7eee767aa68c1cdd067174c14595a1a2014a7171fc9368f5e"
+                  },
+                  {
+                      "name":  "chevron_down",
+                      "texture":  "textures/icons/native/chevron_down.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  6,
+                                  "width":  7,
+                                  "height":  4,
+                                  "x":  4
+                              },
+                      "paintedPixels":  7,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Chevron Down",
+                      "sourceLayerIndex":  6,
+                      "removedOffCanvasPixels":  1,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "af990bdddb9780afc3cebb46731a8a714bd797c1564f2528b38e940ac06d3952"
+                  },
+                  {
+                      "name":  "chevron_up",
+                      "texture":  "textures/icons/native/chevron_up.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  6,
+                                  "width":  7,
+                                  "height":  4,
+                                  "x":  4
+                              },
+                      "paintedPixels":  7,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Chevron Up",
+                      "sourceLayerIndex":  7,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "deda5caf7fcadca59a02fb5f8d36a10758589508b53b5110396589fd4045ade8"
+                  },
+                  {
+                      "name":  "chevron_left",
+                      "texture":  "textures/icons/native/chevron_left.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  4,
+                                  "height":  7,
+                                  "x":  5
+                              },
+                      "paintedPixels":  7,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Chevron Left",
+                      "sourceLayerIndex":  8,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "9e635d46ddb2713e51af82132383c4aa70faf1afa970415f02028405acb4f803"
+                  },
+                  {
+                      "name":  "chevron_right",
+                      "texture":  "textures/icons/native/chevron_right.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  4,
+                                  "height":  7,
+                                  "x":  6
+                              },
+                      "paintedPixels":  7,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Chevron Right",
+                      "sourceLayerIndex":  9,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "b6f829b5ca6604ad9054a40c9e83529543e95848bb5294fccbf4f3586ffc713a"
+                  },
+                  {
+                      "name":  "arrow_down",
+                      "texture":  "textures/icons/native/arrow_down.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  6,
+                                  "width":  7,
+                                  "height":  4,
+                                  "x":  4
+                              },
+                      "paintedPixels":  16,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Arrow Down",
+                      "sourceLayerIndex":  10,
+                      "removedOffCanvasPixels":  1,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "90710d3cd77a16800a6aaccf103388de9fbc42ac04a1ef92de880b07a5c94fbe"
+                  },
+                  {
+                      "name":  "arrow_up",
+                      "texture":  "textures/icons/native/arrow_up.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  6,
+                                  "width":  7,
+                                  "height":  4,
+                                  "x":  4
+                              },
+                      "paintedPixels":  16,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Arrow Up",
+                      "sourceLayerIndex":  11,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "1dc84f485430d4d1a4d98915e0465dbd66dc546aa6ed2aadb9bc1f91912a6af6"
+                  },
+                  {
+                      "name":  "arrow_left",
+                      "texture":  "textures/icons/native/arrow_left.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  4,
+                                  "height":  7,
+                                  "x":  5
+                              },
+                      "paintedPixels":  16,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Arrow Left",
+                      "sourceLayerIndex":  12,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "c27e5e50bfdaf4ee002e04b3d0ed0fd5e2a60f8a895170c32b1cf476b08689bc"
+                  },
+                  {
+                      "name":  "arrow_right",
+                      "texture":  "textures/icons/native/arrow_right.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  4,
+                                  "height":  7,
+                                  "x":  6
+                              },
+                      "paintedPixels":  16,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Arrow Right",
+                      "sourceLayerIndex":  13,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "9eeb127c0bfa5c1b38e9bf287a54f9192b30ad9430f1d380b126b51ca65501f4"
+                  },
+                  {
+                      "name":  "plus",
+                      "texture":  "textures/icons/native/plus.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  7,
+                                  "height":  7,
+                                  "x":  4
+                              },
+                      "paintedPixels":  13,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Plus",
+                      "sourceLayerIndex":  14,
+                      "removedOffCanvasPixels":  1,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "01484f1974196b4f15a6aa6bd6d4ff3166c3776ba39bf16132c331ffc68b7181"
+                  },
+                  {
+                      "name":  "plus_small",
+                      "texture":  "textures/icons/native/plus_small.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  5,
+                                  "width":  5,
+                                  "height":  5,
+                                  "x":  5
+                              },
+                      "paintedPixels":  9,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Plus Smaller",
+                      "sourceLayerIndex":  15,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "1b2743d0bf89c9b99917c0b5e3f303f0e147e04ca9c19e2f3192749496a47c32"
+                  },
+                  {
+                      "name":  "minus",
+                      "texture":  "textures/icons/native/minus.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  7,
+                                  "width":  7,
+                                  "height":  1,
+                                  "x":  4
+                              },
+                      "paintedPixels":  7,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Minus",
+                      "sourceLayerIndex":  16,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "325d76e2412ad69059324fe4a742ef118957a1a26720d0eed4c582193beb76cb"
+                  },
+                  {
+                      "name":  "minus_small",
+                      "texture":  "textures/icons/native/minus_small.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  7,
+                                  "width":  5,
+                                  "height":  1,
+                                  "x":  5
+                              },
+                      "paintedPixels":  5,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Minus Smaller",
+                      "sourceLayerIndex":  17,
+                      "removedOffCanvasPixels":  1,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "b8a7c397f1b633e35bf02097b61e218120a5fd6319eefcf7a65eba0a301766af"
+                  },
+                  {
+                      "name":  "sliders",
+                      "texture":  "textures/icons/native/sliders.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  9,
+                                  "height":  9,
+                                  "x":  3
+                              },
+                      "paintedPixels":  31,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Sliders Icon",
+                      "sourceLayerIndex":  18,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "3ac85a9d81d3090cd96b976449b94c9259999527f8fe73aa4245f1231126db35"
+                  },
+                  {
+                      "name":  "cards",
+                      "texture":  "textures/icons/native/cards.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  11,
+                                  "height":  11,
+                                  "x":  2
+                              },
+                      "paintedPixels":  70,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Cards Icon",
+                      "sourceLayerIndex":  19,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "99fa8273f17680133b6dbbbc18ce950c36162b675578e05e926de227a32a771a"
+                  },
+                  {
+                      "name":  "mail",
+                      "texture":  "textures/icons/native/mail.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  11,
+                                  "height":  9,
+                                  "x":  2
+                              },
+                      "paintedPixels":  45,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Mail",
+                      "sourceLayerIndex":  20,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "5c55f01d00148b3605f22c9a2b63fc8928c6d1d23dbe7064c52b52a68b581ec3"
+                  },
+                  {
+                      "name":  "image",
+                      "texture":  "textures/icons/native/image.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  11,
+                                  "height":  11,
+                                  "x":  2
+                              },
+                      "paintedPixels":  71,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Image",
+                      "sourceLayerIndex":  21,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "a9ddcadf654358c9e318adb4baaf9c75f9fc8143620767487fa448b5dda5f54e"
+                  },
+                  {
+                      "name":  "images",
+                      "texture":  "textures/icons/native/images.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  1,
+                                  "width":  13,
+                                  "height":  13,
+                                  "x":  1
+                              },
+                      "paintedPixels":  91,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Images",
+                      "sourceLayerIndex":  22,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "d74e4574f5422d471eacf8488f2f312e391fce36b17ffa0371c566cf64ff35b4"
+                  },
+                  {
+                      "name":  "exit_right",
+                      "texture":  "textures/icons/native/exit_right.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  8,
+                                  "height":  9,
+                                  "x":  4
+                              },
+                      "paintedPixels":  33,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Exit Right",
+                      "sourceLayerIndex":  23,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "1fc5a81be63fdb3c9fc41a585e272e4674668633ef30862f4b657bc45609a155"
+                  },
+                  {
+                      "name":  "exit_left",
+                      "texture":  "textures/icons/native/exit_left.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  8,
+                                  "height":  9,
+                                  "x":  3
+                              },
+                      "paintedPixels":  33,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Exit Left",
+                      "sourceLayerIndex":  24,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "4b8ba808df16580540b11c9db3a9aa6e8a49d62add035b4ff2b1c76233d8db4b"
+                  },
+                  {
+                      "name":  "warning",
+                      "texture":  "textures/icons/native/warning.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  9,
+                                  "height":  10,
+                                  "x":  3
+                              },
+                      "paintedPixels":  29,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Warning",
+                      "sourceLayerIndex":  25,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "bbcc73b3efa5ae33a3ab163172371f39ea6b0ec3399ce450f57ffe4ebb45e766"
+                  },
+                  {
+                      "name":  "info",
+                      "texture":  "textures/icons/native/info.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  9,
+                                  "height":  9,
+                                  "x":  3
+                              },
+                      "paintedPixels":  36,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Info",
+                      "sourceLayerIndex":  26,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "905357f4e3c2ef46a28fd2e485207ad0712cb5e0829b1e257031881d12035813"
+                  },
+                  {
+                      "name":  "export",
+                      "texture":  "textures/icons/native/export.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  11,
+                                  "height":  9,
+                                  "x":  2
+                              },
+                      "paintedPixels":  38,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Export",
+                      "sourceLayerIndex":  27,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "dc62fe4d0869ec20adb83c0de57a047e279a150c7e0e5f2e6e379a1845a52352"
+                  },
+                  {
+                      "name":  "import",
+                      "texture":  "textures/icons/native/import.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  11,
+                                  "height":  9,
+                                  "x":  2
+                              },
+                      "paintedPixels":  38,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Import",
+                      "sourceLayerIndex":  28,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "a0f3b26c0d7bab6f92e7423b907058d0bc2b3d3f5e98be20931768006dcc2c40"
+                  },
+                  {
+                      "name":  "clipboard",
+                      "texture":  "textures/icons/native/clipboard.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  9,
+                                  "height":  9,
+                                  "x":  3
+                              },
+                      "paintedPixels":  35,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Clipboard",
+                      "sourceLayerIndex":  29,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "9a441bdcc2c96a5b6ace5c5667959a83c8b4dd64289c56a15afd627ce933d33d"
+                  },
+                  {
+                      "name":  "bytecode",
+                      "texture":  "textures/icons/native/bytecode.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  9,
+                                  "height":  9,
+                                  "x":  3
+                              },
+                      "paintedPixels":  42,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Bytecode",
+                      "sourceLayerIndex":  30,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "dbc0d9841b2efeb4627a56da38469d9f3b9db8ccaaef3c9b5cbe1fd2a6d5d53d"
+                  },
+                  {
+                      "name":  "language",
+                      "texture":  "textures/icons/native/language.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  9,
+                                  "height":  9,
+                                  "x":  3
+                              },
+                      "paintedPixels":  29,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Language",
+                      "sourceLayerIndex":  31,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "2ed6e5668e13936424bfb6c2a8e5302a36f90d011e8865726b8d4cb94147888f"
+                  },
+                  {
+                      "name":  "brackets",
+                      "texture":  "textures/icons/native/brackets.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  9,
+                                  "height":  7,
+                                  "x":  3
+                              },
+                      "paintedPixels":  26,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Brackets",
+                      "sourceLayerIndex":  32,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "f8c07364b1593f253ef7a21fe1e8ea4c33cbda5c171f3d277c629b9f3676d7bc"
+                  },
+                  {
+                      "name":  "hashtag",
+                      "texture":  "textures/icons/native/hashtag.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  5,
+                                  "height":  7,
+                                  "x":  5
+                              },
+                      "paintedPixels":  20,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Hashtag",
+                      "sourceLayerIndex":  33,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "b7f6705c745ff69154cc72eaf13eeae6eaeebfe69233de318edbbf0af5dd5e6a"
+                  },
+                  {
+                      "name":  "drag_handle",
+                      "texture":  "textures/icons/native/drag_handle.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  5,
+                                  "width":  3,
+                                  "height":  5,
+                                  "x":  6
+                              },
+                      "paintedPixels":  6,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "6 Dots Vertical",
+                      "sourceLayerIndex":  34,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "bc8445c302daba17f9ba1a8b02e0b18fea993dad7b82bb4e566c2c8777d0b9df"
+                  },
+                  {
+                      "name":  "question",
+                      "texture":  "textures/icons/native/question.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  5,
+                                  "height":  7,
+                                  "x":  5
+                              },
+                      "paintedPixels":  9,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Question",
+                      "sourceLayerIndex":  35,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "8be62ae7105c97618e5dc6191ea2d57e97df29f83b3332b144b4eb5bb443670f"
+                  },
+                  {
+                      "name":  "ellipsis_horizontal",
+                      "texture":  "textures/icons/native/ellipsis_horizontal.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  7,
+                                  "width":  5,
+                                  "height":  1,
+                                  "x":  5
+                              },
+                      "paintedPixels":  3,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "3 Dots Horizontal",
+                      "sourceLayerIndex":  36,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "f2c57e9fdc5b0fba52d192fad951e4e6efc2cbb6b13403bbf5d4763871826bfe"
+                  },
+                  {
+                      "name":  "present",
+                      "texture":  "textures/icons/native/present.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  9,
+                                  "height":  11,
+                                  "x":  3
+                              },
+                      "paintedPixels":  50,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Present",
+                      "sourceLayerIndex":  37,
+                      "removedOffCanvasPixels":  5,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "41d6746a212fac8d784c1df98c6cb99d87617baf5fce4ce50cf4d611225c0329"
+                  },
+                  {
+                      "name":  "loop",
+                      "texture":  "textures/icons/native/loop.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  9,
+                                  "height":  9,
+                                  "x":  3
+                              },
+                      "paintedPixels":  32,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Loop",
+                      "sourceLayerIndex":  38,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "00ad9215763af758cd2be09b4f98a75089e748c150c085d4250d6a818fd70864"
+                  },
+                  {
+                      "name":  "menu",
+                      "texture":  "textures/icons/native/menu.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  5,
+                                  "width":  7,
+                                  "height":  5,
+                                  "x":  4
+                              },
+                      "paintedPixels":  18,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "Menu",
+                      "sourceLayerIndex":  39,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "add93b7c41f1c6836bd8ba4d2e3d39226ea367f61710558b711a628956dc6e3c"
+                  },
+                  {
+                      "name":  "ellipsis_vertical",
+                      "texture":  "textures/icons/native/ellipsis_vertical.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  5,
+                                  "width":  1,
+                                  "height":  5,
+                                  "x":  7
+                              },
+                      "paintedPixels":  3,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "3 Dots Vertical",
+                      "sourceLayerIndex":  40,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "2d72b98bda5ff58a5ee3fbb92d9cc8e9fd32a3a40b7ea521411ee3a7cf80da54"
+                  },
+                  {
+                      "name":  "grid",
+                      "texture":  "textures/icons/native/grid.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  6,
+                                  "width":  3,
+                                  "height":  3,
+                                  "x":  6
+                              },
+                      "paintedPixels":  4,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "4 Dots Middle",
+                      "sourceLayerIndex":  41,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "4824a7b9d073d7fe37a1fa18777fb6a96881ce374c138e6e45c6ff7ceeb2de3d"
+                  },
+                  {
+                      "name":  "grid_large",
+                      "texture":  "textures/icons/native/grid_large.png",
+                      "canvasSize":  15,
+                      "ink":  {
+                                  "y":  5,
+                                  "width":  5,
+                                  "height":  5,
+                                  "x":  5
+                              },
+                      "paintedPixels":  16,
+                      "sourceFile":  "x16_icons.psd",
+                      "sourceSha256":  "6f6921d996de782df764ee5cbfac1287884d8585a19f9f00f71ade69baaf7092",
+                      "sourceLayer":  "4 Dots Middle Bigger",
+                      "sourceLayerIndex":  42,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "321b144f3e13be301635b8d3e9f60bcee38c49ea9cf4a4f51bc613ecfa5cfb95"
+                  },
+                  {
+                      "name":  "home",
+                      "texture":  "textures/icons/native/home.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  12,
+                                  "height":  12,
+                                  "x":  2
+                              },
+                      "paintedPixels":  40,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Home",
+                      "sourceLayerIndex":  1,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "760953ac918e3b49b0ea3bb1542a1ef96dfcfb51002ca1edba4270cf32c41a95"
+                  },
+                  {
+                      "name":  "user",
+                      "texture":  "textures/icons/native/user.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  8,
+                                  "height":  9,
+                                  "x":  4
+                              },
+                      "paintedPixels":  20,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "User",
+                      "sourceLayerIndex":  2,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "5b0f6bac800a2d31d0fa83c412fe7c4b03096d8ef26dba376a51562c3770074b"
+                  },
+                  {
+                      "name":  "users",
+                      "texture":  "textures/icons/native/users.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  12,
+                                  "height":  11,
+                                  "x":  2
+                              },
+                      "paintedPixels":  32,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Users",
+                      "sourceLayerIndex":  3,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "e0b49abbdda8a1a031c944965867f22b3d9a1f9b77a4b3e7bb75a00880828e2e"
+                  },
+                  {
+                      "name":  "user_add",
+                      "texture":  "textures/icons/native/user_add.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  10,
+                                  "height":  11,
+                                  "x":  4
+                              },
+                      "paintedPixels":  26,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "User add",
+                      "sourceLayerIndex":  4,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "7f7eaf59578d6431f36f454380e9062d83d190ae4e1a309ba15463dad73e6f2f"
+                  },
+                  {
+                      "name":  "search",
+                      "texture":  "textures/icons/native/search.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  11,
+                                  "height":  11,
+                                  "x":  3
+                              },
+                      "paintedPixels":  24,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Search",
+                      "sourceLayerIndex":  5,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "ed393f5f9e6429548ab34a6930181208b0f56cd30af2d5ea4d8fca4c84f73b15"
+                  },
+                  {
+                      "name":  "play",
+                      "texture":  "textures/icons/native/play.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  7,
+                                  "height":  10,
+                                  "x":  5
+                              },
+                      "paintedPixels":  20,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Play",
+                      "sourceLayerIndex":  6,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "c9aef21cca379cf8fc83173d36f0121aa71f99a310355f94b5af5433cad2331b"
+                  },
+                  {
+                      "name":  "pencil",
+                      "texture":  "textures/icons/native/pencil.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  8,
+                                  "height":  8,
+                                  "x":  4
+                              },
+                      "paintedPixels":  19,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Pencil",
+                      "sourceLayerIndex":  7,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "9d48825f1e12522f9a79c0d8b7cde486a77e1de2c1348a00c68bfa1345aef4bf"
+                  },
+                  {
+                      "name":  "key",
+                      "texture":  "textures/icons/native/key.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  8,
+                                  "height":  12,
+                                  "x":  4
+                              },
+                      "paintedPixels":  42,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Key",
+                      "sourceLayerIndex":  8,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "a326e890fb067685a288afecebdd83c600871e1be56846a1f3a9b54c3c19f3ca"
+                  },
+                  {
+                      "name":  "hammer",
+                      "texture":  "textures/icons/native/hammer.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  8,
+                                  "height":  10,
+                                  "x":  4
+                              },
+                      "paintedPixels":  31,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Hammer",
+                      "sourceLayerIndex":  9,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "4a3e68ee86bd09816b8ff33f0377562c83659d6d11a963ba981b61462701e4de"
+                  },
+                  {
+                      "name":  "hanger",
+                      "texture":  "textures/icons/native/hanger.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  12,
+                                  "height":  12,
+                                  "x":  2
+                              },
+                      "paintedPixels":  36,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Hanger",
+                      "sourceLayerIndex":  10,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "e02e8de6629bccd29dba048d400f842bc6f0d1a0543e68e0759696c1d5069437"
+                  },
+                  {
+                      "name":  "bag",
+                      "texture":  "textures/icons/native/bag.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  1,
+                                  "width":  14,
+                                  "height":  14,
+                                  "x":  1
+                              },
+                      "paintedPixels":  60,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Bag",
+                      "sourceLayerIndex":  11,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero.",
+                                      "The initial cleanup hand-redrew the bag to 12x12. The user subsequently supplied a 14x14 version and explicitly chose to keep it. The current PNG is preserved byte-for-byte; only its recorded bounds, pixel count and hash were refreshed. Corrected PSD/contact-sheet copies remain snapshots of the initial cleanup."
+                                  ],
+                      "sha256":  "e6ab0a4512056e257ffc54e4f6bf1d3cd49777170ffdf93ec4de3a3dd34f441a"
+                  },
+                  {
+                      "name":  "hashtag_large",
+                      "texture":  "textures/icons/native/hashtag_large.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  8,
+                                  "height":  10,
+                                  "x":  4
+                              },
+                      "paintedPixels":  32,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Hashtag Big",
+                      "sourceLayerIndex":  12,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero.",
+                                      "Hand-redrew the 10x12 double-weight hashtag as a centered 8x10 single-pixel-stroke large variant. The separate 5x7 standard hashtag is unchanged."
+                                  ],
+                      "sha256":  "6b194245559dd6f9e6ddc0a1ed6fe599b343a8423f907dfd432f54ea59845f71"
+                  },
+                  {
+                      "name":  "droplets",
+                      "texture":  "textures/icons/native/droplets.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  4,
+                                  "width":  6,
+                                  "height":  8,
+                                  "x":  5
+                              },
+                      "paintedPixels":  14,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Droplets",
+                      "sourceLayerIndex":  13,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "bc6b5650bd26b563ea6a7ee7d550ef769366a03bb14c2e1c3cac0b39f04e5a43"
+                  },
+                  {
+                      "name":  "filter",
+                      "texture":  "textures/icons/native/filter.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  2,
+                                  "width":  12,
+                                  "height":  12,
+                                  "x":  2
+                              },
+                      "paintedPixels":  34,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "Filter",
+                      "sourceLayerIndex":  14,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "560716df1f08f1c584273716979593da1248edbcbdbb9bcc91ee4c6c0feb5d3a"
+                  },
+                  {
+                      "name":  "ellipsis_horizontal_large",
+                      "texture":  "textures/icons/native/ellipsis_horizontal_large.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  7,
+                                  "width":  10,
+                                  "height":  2,
+                                  "x":  3
+                              },
+                      "paintedPixels":  12,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "3 Dots Horizontal Bigger",
+                      "sourceLayerIndex":  15,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "a4a1bb1537a79e3e49f72f85b853bd687f1f81e3ebb9ec7a5fa47a91fd7e2858"
+                  },
+                  {
+                      "name":  "drag_handle_large",
+                      "texture":  "textures/icons/native/drag_handle_large.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  6,
+                                  "height":  10,
+                                  "x":  5
+                              },
+                      "paintedPixels":  24,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "6 Dots Vertical Bigger",
+                      "sourceLayerIndex":  16,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "a98b1fdef6110a67dc0539261443c36bdde32fab18b7fd700db13a5bdab1690c"
+                  },
+                  {
+                      "name":  "ellipsis_vertical_large",
+                      "texture":  "textures/icons/native/ellipsis_vertical_large.png",
+                      "canvasSize":  16,
+                      "ink":  {
+                                  "y":  3,
+                                  "width":  2,
+                                  "height":  10,
+                                  "x":  7
+                              },
+                      "paintedPixels":  12,
+                      "sourceFile":  "x15_icons.psd",
+                      "sourceSha256":  "103f4354c27f1a5e390652398c8ed6e0dd28b7bc06cd733552d1f55618bdfc16",
+                      "sourceLayer":  "3 Dots Vertical Bigger copy",
+                      "sourceLayerIndex":  17,
+                      "removedOffCanvasPixels":  0,
+                      "changes":  [
+                                      "Read the layer independently of its hidden PSD visibility flag; omitted the non-icon Layer 1 background.",
+                                      "Exported the full document canvas, excluding off-canvas content and normalizing transparent RGB to zero."
+                                  ],
+                      "sha256":  "ea1a35176bcfec0fb91bb5fdf79f034af9933622b1935bdc80c6c721576c5ded"
+                  }
+              ]
+}

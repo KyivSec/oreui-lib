@@ -1,0 +1,160 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+
+group = mod_group_id
+version = mod_version
+
+base {
+    archivesName = mod_artifact_name
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'Curios'
+        url = 'https://maven.theillusivec4.top/'
+        content { includeGroup 'top.theillusivec4.curios' }
+    }
+}
+
+dependencies {
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    if (providers.gradleProperty('withCurios').isPresent()) {
+        runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    }
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+
+neoForge {
+    version = neo_version
+    addModdingDependenciesTo sourceSets.test
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+            gameDirectory = file('run-server')
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+def metadataProperties = [
+    mod_id: mod_id,
+    mod_name: mod_name,
+    mod_version: mod_version,
+    mod_authors: mod_authors,
+    mod_license: mod_license,
+    mod_description: mod_description,
+    minecraft_version_range: minecraft_version_range,
+    neo_version: neo_version,
+    loader_version_range: loader_version_range
+]
+
+def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    inputs.properties metadataProperties
+    filteringCharset = 'UTF-8'
+    expand metadataProperties
+    from 'src/main/templates'
+    into layout.buildDirectory.dir('generated/modMetadata')
+}
+
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+tasks.named('jar', Jar) {
+    from('LICENSE', 'THIRD-PARTY-NOTICES.md')
+    manifest.attributes('Implementation-Title': mod_name, 'Implementation-Version': mod_version)
+}
+
+tasks.named('sourcesJar', Jar) {
+    from('LICENSE', 'THIRD-PARTY-NOTICES.md')
+}
+
+tasks.named('wrapper', Wrapper) {
+    gradleVersion = '9.2.1'
+    distributionType = Wrapper.DistributionType.BIN
+    distributionSha256Sum = '72f44c9f8ebcb1af43838f45ee5c4aa9c5444898b3468ab3f4af7b6076c5bc3f'
+}
+
+def libraryJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
+def verifyArtifact = tasks.register('verifyArtifact') {
+    dependsOn tasks.named('jar')
+    inputs.file libraryJar
+    inputs.properties metadataProperties
+    doLast {
+        def jarFile = libraryJar.get().asFile
+        new java.util.jar.JarFile(jarFile).withCloseable { archive ->
+            def metadata = archive.getInputStream(archive.getJarEntry('META-INF/neoforge.mods.toml')).getText('UTF-8')
+            assert !metadata.contains('${') : 'Unexpanded mod metadata'
+            [modId: mod_id, displayName: mod_name, version: mod_version, authors: mod_authors, license: mod_license].each { key, value ->
+                assert metadata.contains("${key}=\"${value}\"") : "Incorrect metadata: ${key}"
+            }
+            assert metadata.contains("description='''${mod_description}'''") : 'Incorrect description'
+            assert (metadata =~ /(?m)^modId="([^"]+)"$/).collect { it[1] } == [mod_id, 'neoforge', 'minecraft', 'curios'] : 'Unexpected mod dependencies'
+            assert metadata.count('type="required"') == 2 : 'Unexpected required mod dependencies'
+            assert metadata.count('type="optional"') == 1 : 'Expected optional Curios compatibility'
+            assert archive.getJarEntry('LICENSE') != null : 'Missing code license'
+            assert archive.getJarEntry('THIRD-PARTY-NOTICES.md') != null : 'Missing design attribution'
+            assert !archive.entries().toList().any {
+                !it.directory && it.name.startsWith('assets/oreui_lib/font/')
+            } : 'Unexpected bundled font resources; run clean build'
+            assert archive.getJarEntry('assets/oreui_lib/font-attribution.json') == null : 'Unused font attribution remains'
+            assert archive.getJarEntry('assets/minecraft/font/default.json') == null : 'Must not override the global default font'
+            def iconPngs = archive.entries().toList().findAll {
+                it.name.startsWith('assets/oreui_lib/textures/icons/') && it.name.endsWith('.png')
+            }
+            assert iconPngs.count { it.name.startsWith('assets/oreui_lib/textures/icons/native/') } == 59 : 'Expected 59 native icons'
+            assert iconPngs.findAll { !it.name.startsWith('assets/oreui_lib/textures/icons/native/') }*.name ==
+                    ['assets/oreui_lib/textures/icons/package_16.png'] : 'Unused legacy icon textures remain; run clean build'
+            ['loading', 'progress'].each { animation ->
+                assert archive.getJarEntry("assets/oreui_lib/textures/gui/${animation}.png") != null : "Missing ${animation} strip"
+            }
+            assert archive.getJarEntry('assets/oreui_lib/animation-attribution.json') != null : 'Missing animation provenance'
+            assert archive.getJarEntry('assets/oreui_lib/textures/gui/community-icons.png') == null : 'Retired Figma atlas remains; run clean build'
+            assert archive.getJarEntry('assets/oreui_lib/community-icon-attribution.json') == null : 'Retired atlas metadata remains'
+            def entryName = mod_group_id.replace('.', '/') + '/OreUi.class'
+            archive.getInputStream(archive.getJarEntry(entryName)).withCloseable { stream ->
+                def bytes = new DataInputStream(stream)
+                assert bytes.readInt() == (int) 0xCAFEBABE
+                bytes.readUnsignedShort()
+                assert bytes.readUnsignedShort() == 65 : 'Expected Java 21 bytecode'
+            }
+        }
+        new URLClassLoader([jarFile.toURI().toURL()] as URL[], ClassLoader.platformClassLoader).withCloseable { loader ->
+            def entrypoint = Class.forName("${mod_group_id}.OreUi", true, loader)
+            assert entrypoint.getField('ID').get(null) == mod_id : 'Entrypoint and metadata mod IDs differ'
+            entrypoint.getConstructor().newInstance()
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn verifyArtifact
+}

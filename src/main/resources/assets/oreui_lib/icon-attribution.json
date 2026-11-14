@@ -1,0 +1,18 @@
+﻿{
+    "source":  "https://www.figma.com/community/file/1675191037788105821/minecraft-ore-ui-style",
+    "license":  "https://creativecommons.org/licenses/by/4.0/",
+    "changes":  "Retained only the 16px Package fallback from the earlier shadow-free offline SVG import. Removed unused raster variants and Add/Search aliases after native PSD migration.",
+    "entries":  [
+                    {
+                        "name":  "Package",
+                        "size":  16,
+                        "resource":  "textures/icons/package_16.png",
+                        "sourcePng":  "Name=Package, Size=16--425-10776.png",
+                        "sourceSvg":  "Name=Package, Size=16--425-10776.svg",
+                        "node":  "425:10776",
+                        "removedShadow":  true,
+                        "correctedCheckOrientation":  false,
+                        "sha256":  "ec49c2ab420131f73a6c549ed3e0171274620b3a6c524ea26d193a90edc990b0"
+                    }
+                ]
+}
