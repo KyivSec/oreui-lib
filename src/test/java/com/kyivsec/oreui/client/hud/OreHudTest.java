@@ -16,10 +16,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class OreHudTest {
     private static final class Action extends AbstractWidget {
         private final Runnable action;
+        private boolean pressed;
         Action(Runnable action) { super(0, 0, 100, 20, Component.literal("Action")); this.action = action; }
         @Override public boolean keyPressed(int key, int scan, int modifiers) {
             if (key != GLFW.GLFW_KEY_ENTER) return false;
+            if (pressed) return true;
+            pressed = true;
             action.run(); return true;
+        }
+        @Override public boolean keyReleased(int key, int scan, int modifiers) {
+            if (key != GLFW.GLFW_KEY_ENTER) return false;
+            pressed = false; return true;
         }
         @Override protected void renderWidget(GuiGraphics graphics, int x, int y, float partial) {}
         @Override protected void updateWidgetNarration(NarrationElementOutput output) {}
@@ -116,5 +123,23 @@ class OreHudTest {
         assertTrue(layer[0].mouseClicked(0, 0, 0));
         assertFalse(layer[0].hasPopover());
         assertEquals(1, activations.get());
+    }
+
+    @Test
+    void releasingAnOpeningKeyWhileInAPopoverAlsoReleasesTheParentControl() {
+        OreHudLayer[] layer = new OreHudLayer[1];
+        OreGrid body = new OreGrid(1, 1);
+        body.add(new Action(() -> layer[0].openPopover(new OreGrid(1, 1),
+                () -> new ScreenRectangle(100, 30, 100, 20), () -> {})), 0, 0);
+        layer[0] = new OreHudLayer(ResourceLocation.fromNamespaceAndPath("example", "release"), () -> body);
+        layer[0].layout(320, 240);
+        layer[0].keyPressed(GLFW.GLFW_KEY_TAB, 0, 0);
+        layer[0].keyPressed(GLFW.GLFW_KEY_ENTER, 0, 0);
+        assertTrue(layer[0].hasPopover());
+        layer[0].keyReleased(GLFW.GLFW_KEY_ENTER, 0, 0);
+        layer[0].keyPressed(GLFW.GLFW_KEY_ESCAPE, 0, 0);
+        assertFalse(layer[0].hasPopover());
+        layer[0].keyPressed(GLFW.GLFW_KEY_ENTER, 0, 0);
+        assertTrue(layer[0].hasPopover());
     }
 }

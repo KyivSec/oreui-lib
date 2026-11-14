@@ -201,7 +201,10 @@ public final class OreHudLayer {
     }
     void keyReleased(int key, int scan, int modifiers) {
         openingKeys.remove(key);
-        (popover == null ? host() : popover).keyReleased(key, scan, modifiers);
+        // The opener still owns the original press, even while focus is in its popover.
+        // Release both hosts so Escape-dismissed menus can be opened again on the very next press.
+        host().keyReleased(key, scan, modifiers);
+        if (popover != null) popover.keyReleased(key, scan, modifiers);
     }
     void charTyped(char character, int modifiers) { (popover == null ? host() : popover).charTyped(character, modifiers); }
     AbstractWidget focusedWidget() {
