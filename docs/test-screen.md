@@ -1,18 +1,18 @@
 # Interactable test screen
 
-Join a world with the library installed on the client and run:
+The gallery is an opt-in example. Open it from your own client-side development code:
 
-```text
-/oreui test
+```java
+Minecraft.getInstance().setScreen(new OreUiTestScreen());
 ```
 
-This is a client command, available without cheats or operator permission. Opening is queued until the current chat submission has finished closing, so chat does not immediately close the test screen. No server command or network message is used.
+The library registers no test/demo commands or main-menu buttons. Open examples only on the client thread; no server command or network message is used.
 
 The screen fills the Minecraft window's GUI area; it does not change the operating system's fullscreen setting. It uses the standard screen pause behavior in singleplayer.
 
-For a separate persistent in-game demonstration, use `/oreui hud` and F7 (or `/oreui hud edit`) for cursor mode. This does not open the test screen or pause gameplay; see [HUD integration](hud.md).
+HUD examples also require explicit registration by client code; see [HUD integration](hud.md).
 
-The main menu's **OreUI previews** button opens a separate classic/slim standalone player-model demo, with no world or local player required. See [3D previews](3d-previews.md) for appearance and resource-lifecycle APIs; the gallery's equipment/Curios example continues to use the entity-based renderer.
+`OrePlayerPreviewDemo.open()` opens a separate classic/slim standalone player-model example, with no world or local player required. It does not add a main-menu button. See [3D previews](3d-previews.md) for appearance and resource-lifecycle APIs; the gallery's equipment/Curios example continues to use the entity-based renderer.
 
 ## Controls
 
@@ -31,7 +31,7 @@ The main menu's **OreUI previews** button opens a separate classic/slim standalo
 - Tab and Shift+Tab navigate controls; Enter or Space activates a focused button. A held activation key does not repeatedly activate an Ore button. Native slider keyboard behavior is retained: arrows adjust it while in adjustment mode; Enter/Space toggles that mode.
 - Keyboard focus automatically scrolls a content control into view. Hidden and disabled controls are skipped. Raised buttons retain focus while pressed but suppress the white focus edge until release; switches outline only the handle. Other control focus outlines are unchanged.
 - Escape or Back closes the topmost screen/layer first. Popups use NeoForge's native GUI layer stack and receive input instead of the gallery. Dropdowns also dismiss on an outside click, consuming that click rather than activating the gallery underneath.
-- A new `/oreui test` starts with fresh values. Page changes and window/GUI-scale resizing keep existing widgets, text selection, edited values, click count, tab selection, and each gallery page's scroll position where it still fits.
+- A new `OreUiTestScreen` starts with fresh values. Page changes and window/GUI-scale resizing keep existing widgets, text selection, edited values, click count, tab selection, and each gallery page's scroll position where it still fits.
 - Numeric input permits intermediate decimal/scientific entries. Enter or focus loss commits finite numbers; invalid/incomplete values revert to the previous committed value without a change callback.
 - Keybind capture changes only a local UI value, not Minecraft's gameplay mappings. Press any key or click a mouse button; Escape cancels and Backspace clears. Held activation keys that opened a popup are ignored until released.
 
@@ -88,7 +88,7 @@ These are initial element-family APIs, not complete resource-based themes, a ful
 
 These are checks to perform in-game, not claims of completed manual tests:
 
-1. Open with `/oreui test`, without enabling cheats. Confirm the screen remains open after chat closes.
+1. Open `OreUiTestScreen` from client-side development code. Confirm the library adds no test/demo commands or main-menu buttons.
 2. Click/hold the counter; release inside and outside; verify no duplicate release activation. Hold Space/Enter while focused and check that only one activation occurs.
 3. Visit all ten pages. Verify both navigation bars, accordions/table, tab selection, checkboxes, exclusive radios, switch/disabled states, and dropdown selection with mouse and keyboard.
 4. Edit/select non-ASCII text and copy/paste. Test search results, intermediate numeric entries and commit/revert, key/mouse capture and cancellation, and inline square/hue/hex synchronization. Check immediate color updates, square corners, drag clamping, arrow keys, Shift increments and alpha preservation. Change pages and resize; colors and hex text should survive. Short layouts scroll the inline editor normally.

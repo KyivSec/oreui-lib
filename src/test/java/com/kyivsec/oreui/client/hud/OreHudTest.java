@@ -164,7 +164,7 @@ class OreHudTest {
         assertFalse(layer.hasPopover());
         assertNull(layer.focusedWidget());
         layer.openPopover(new OreGrid(1, 1), () -> slider.getRectangle(), closed::incrementAndGet);
-        layer.enabled(false); // The /oreui hud off path.
+        layer.enabled(false); // Explicitly hiding the layer also ends interaction.
         assertFalse(layer.hasPopover());
         for (int tick = 0; tick < 100; tick++) layer.tick(false);
         slider.onRelease(0, 0); // A late native release must also remain silent after cancellation.

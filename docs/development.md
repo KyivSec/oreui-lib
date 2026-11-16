@@ -22,7 +22,7 @@ Use Java 21 on PATH, or set JAVA_HOME to a Java 21 JDK.
 
 JUnit is used only by the test source set and is not bundled with the mod or added to normal game runs. Run `gradlew.bat test` for the automated checks.
 
-In a world, enter `/oreui test` to open the full-window interactable example. No cheats, operator privileges, server command, or server-side installation are required. See `test-screen.md` for controls and the initial public widget API.
+The library registers no test/demo commands or main-menu buttons. Examples are opt-in through client code; see `test-screen.md` for the gallery and public widget API.
 
 The entrypoint is explicitly client-only. Keep future Minecraft client references behind client-side entrypoints and in client API packages. Do not add server-side services or require this library on the server. The metadata allows client/server mod-list differences.
 

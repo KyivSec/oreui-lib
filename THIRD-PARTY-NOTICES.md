@@ -10,7 +10,7 @@ Minecraft - Ore UI Style is credited to **Miljö AB** and **Turóczi Ádám** an
 - License: https://creativecommons.org/licenses/by/4.0/
 - Legal code: https://creativecommons.org/licenses/by/4.0/legalcode
 
-This library adapts that design system into reusable, procedurally rendered Minecraft widgets. `OrePalette` uses the supplied document's Colored, General, Destructive, Warning, and Realms color variables. `OreDrawing`, `OreButton`, `OreSlider`, and the `/oreui test` screen adapt the visual language into flat rectangular surfaces, highlights, shadows, visible focus, and a progress track. These are adaptations, not an exact reproduction of all source variants or motion.
+This library adapts that design system into reusable, procedurally rendered Minecraft widgets. `OrePalette` uses the supplied document's Colored, General, Destructive, Warning, and Realms color variables. `OreDrawing`, `OreButton`, `OreSlider`, and the opt-in `OreUiTestScreen` example adapt the visual language into flat rectangular surfaces, highlights, shadows, visible focus, and a progress track. These are adaptations, not an exact reproduction of all source variants or motion.
 
 The Button and Switch pass references the live Figma components at https://www.figma.com/design/L52fkxlS4dEWvbt28gDJ1p?node-id=425-8332 (Button set `425:8428`, Switch set `425:9269`). Adaptations include directional bevels, pressed face displacement, palette-colored disabled buttons, quarter-scale switch geometry, handle-only hover/focus, gray disabled switch handles, and optional procedural on/off symbols. Layout sizes and Minecraft's existing font remain project-native; no additional source images or fonts are redistributed by this pass.
 

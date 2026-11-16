@@ -4,14 +4,14 @@ HUD layers use NeoForge's native GUI-layer registration. They do not open a `Scr
 
 ## Demo
 
-- `/oreui hud` toggles the local demo; `/oreui hud on` and `off` set its visibility.
-- `/oreui hud edit` enables it and enters cursor mode. **F7** toggles cursor mode for the topmost eligible interactive Ore layer; remap this in Controls → OreUI Lib.
+- HUD examples are not registered automatically, and the library adds no test/demo commands. To opt in, register `OreHudDemo.LAYER` from your client `RegisterGuiLayersEvent` listener and use `enabled(true)` / `enabled(false)` to control visibility.
+- `OreHudDemo.edit()` enables the registered example and enters cursor mode. **F7** toggles cursor mode for the topmost eligible interactive Ore layer; remap this in Controls → OreUI Lib.
 - **Escape** closes a HUD popover first, then exits cursor mode. Tab/Shift+Tab traverses widgets. Sliders retain their native adjustment-mode controls.
 - The demo has progress, a slider, a counter, an anchored dropdown and an isolated floating block preview. All values are local UI state.
 
 ### Live health/hunger test
 
-`/oreui hud test` toggles a separate display-only HUD with a **red health bar** and a **light-brown hunger bar**. It divides the entire GUI area into a logical 5×5 grid (no visible grid lines), placing both bars in the upper-left cell with four-pixel insets. The grid follows window resizing and GUI scale; the other 24 cells stay empty. Bars show live current/maximum values: health uses the player's current maximum health and hunger uses 20 food points. They only read client player state, leave vanilla HUD bars intact, and never capture input or change stats. The test stays visible while typing in chat, but hides in inventories, pause/other menus, on the main menu, and with F1. Repeat the command to hide it, or use `/oreui hud off` to hide both built-in HUD demos.
+`OreHudStatTest.LAYER` is an opt-in display-only example with a **red health bar** and a **light-brown hunger bar**. Register it explicitly and control visibility with `enabled(true)` / `enabled(false)`. It divides the entire GUI area into a logical 5×5 grid (no visible grid lines), placing both bars in the upper-left cell with four-pixel insets. The grid follows window resizing and GUI scale; the other 24 cells stay empty. Bars show live current/maximum values: health uses the player's current maximum health and hunger uses 20 food points. They only read client player state, leave vanilla HUD bars intact, and never capture input or change stats. The example stays visible while typing in chat, but hides in inventories, pause/other menus, on the main menu, and with F1.
 
 ## Registering a layer
 
@@ -53,7 +53,7 @@ Allowing a screen changes **display only**, never input ownership. Chat continue
 
 Use `.interactive(true)` and `OreHudManager.startInteraction(layer.id())` for an opt-in cursor mode. `stopInteraction()` exits it. Mouse capture is restored only when appropriate; opening another screen, losing focus, hiding/disabling the layer, F1 or leaving the world cancels capture. Cursor mode owns pointer/keyboard input so outside clicks cannot attack, use an item or re-grab the mouse underneath. F2 screenshots remain available. Held UI keys remain suppressed until release when returning to gameplay. Focused labels are announced through Minecraft's narrator.
 
-Opening a regular screen or pushing a GUI layer immediately dismisses HUD popovers and clears HUD focus/drag capture without re-grabbing the mouse. Disabling a layer also dismisses its popovers immediately. Cancellation is silent: a slider plays its release click only after an actual pointer drag ends, not while hidden or during cleanup. Escape exits interaction; the persistent display remains enabled until explicitly hidden with `enabled(false)` or `/oreui hud off`.
+Opening a regular screen or pushing a GUI layer immediately dismisses HUD popovers and clears HUD focus/drag capture without re-grabbing the mouse. Disabling a layer also dismisses its popovers immediately. Cancellation is silent: a slider plays its release click only after an actual pointer drag ends, not while hidden or during cleanup. Escape exits interaction; the persistent display remains enabled until explicitly hidden with `enabled(false)`.
 
 NeoForge's raw key event is not cancellable. Small **client-only** keyboard/mouse callback mixins route input before vanilla gameplay handling; they do nothing when interaction is inactive (apart from suppressing already-consumed held-key releases/repeats). Rendering and layout remain native. No packets/game actions are sent by this host; consumers remain responsible for their own callbacks.
 

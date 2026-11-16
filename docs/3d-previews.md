@@ -64,9 +64,9 @@ preview.removeStandaloneLayer(overlay);
 
 Visual layers run after the base skin, in registration order. `OrePlayerRenderContext` exposes the native model/root, graphics/pose/buffers, appearance, pose inputs and full-bright packed light. `renderSkinLayer(texture,tint)` draws a skin-space overlay using the posed player model; arbitrary custom parts can call their native `ModelPart.render` with the context's pose/buffer/light. Extra root children are **not** automatically drawn by the vanilla player model: render them in a visual layer or include them in a model subclass's part traversal. Layers get individual pose-stack push/pop scopes; normal widget clipping and render-state restoration still apply. Contexts are frame-local and must not be retained. Hooks must balance their own nested pose/scissor operations, avoid gameplay calls, and manage their own assets. No vanilla entity `RenderLayer`, Curios renderer or living-entity render event is invoked on the standalone path.
 
-### Main-menu demo
+### Opt-in standalone demo
 
-Click **OreUI previews** in the main menu's upper-right corner. It opens classic Steve and slim Alex models using Minecraft's existing textures, with walking/head tracking, animation pause and a swing button. The preview area resizes with the GUI. It can also be opened through `OrePlayerPreviewDemo.open()`. No world/player needs to have been loaded, and the example contains no appearance editor, asset generation, persistence or gameplay logic.
+Call `OrePlayerPreviewDemo.open()` from your own client-side development code to open classic Steve and slim Alex models using Minecraft's existing textures, with walking/head tracking, animation pause and a swing button. The library does not add a main-menu button. The preview area resizes with the GUI. No world/player needs to have been loaded, and the example contains no appearance editor, asset generation, persistence or gameplay logic.
 
 ## Transforms and item motion
 

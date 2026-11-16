@@ -85,9 +85,9 @@ Render a section background before its children, or in `OreScreen.renderContentB
 
 `OreHudLayer` hosts persistent widgets during gameplay without a screen. See [HUD integration](hud.md) for native layer registration, display policies and explicit cursor mode.
 
-`OreStatBar(label, color, currentSupplier, maximumSupplier)` is a compact display-only colored value/maximum bar. It samples live values for rendering/narration, clamps invalid/out-of-range values, and supports native grid resizing. `/oreui hud test` demonstrates red health and light-brown hunger bars.
+`OreStatBar(label, color, currentSupplier, maximumSupplier)` is a compact display-only colored value/maximum bar. It samples live values for rendering/narration, clamps invalid/out-of-range values, and supports native grid resizing. The opt-in `OreHudStatTest.LAYER` example demonstrates red health and light-brown hunger bars.
 
-`OrePlayerPreview` accepts an `OrePlayerAppearance` for standalone classic/slim native model rendering, including on the main menu without a world/player. Its original entity/equipment/Curios path remains available. See [3D previews](3d-previews.md) for appearances, texture ownership, resource reloads and custom part/layer hooks. The main menu's **OreUI previews** button opens the standalone demonstration.
+`OrePlayerPreview` accepts an `OrePlayerAppearance` for standalone classic/slim native model rendering, including on the main menu without a world/player. Its original entity/equipment/Curios path remains available. See [3D previews](3d-previews.md) for appearances, texture ownership, resource reloads and custom part/layer hooks. The standalone example is available only through an explicit `OrePlayerPreviewDemo.open()` call.
 
 `OreMenuPresets` and `OreGridScreen` provide settings, simple, split-preview, modal and anchored menu shells composed from grid regions. See [Menu presets](menu-presets.md) for the public APIs and fixed-chrome/scrolling-body behavior.
 
@@ -95,7 +95,7 @@ Render a section background before its children, or in `OreScreen.renderContentB
 
 ## Icons and previews
 
-See [Native icons](native-icons.md) for static glyphs and compatibility, [Loading animations](loading-animations.md) for frame selection, and [3D previews](3d-previews.md) for model transforms, equipment snapshots and lifecycle. The [test screen](test-screen.md) demonstrates these APIs with `/oreui test`.
+See [Native icons](native-icons.md) for static glyphs and compatibility, [Loading animations](loading-animations.md) for frame selection, and [3D previews](3d-previews.md) for model transforms, equipment snapshots and lifecycle. The opt-in [test screen](test-screen.md) demonstrates these APIs without registering commands or main-menu buttons.
 
 ## Color selection
 

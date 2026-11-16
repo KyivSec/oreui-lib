@@ -1,6 +1,5 @@
 package com.kyivsec.oreui.client.screen;
 
-import com.kyivsec.oreui.OreUi;
 import com.kyivsec.oreui.client.layout.OreGrid;
 import com.kyivsec.oreui.client.layout.OreMenuPresets;
 import com.kyivsec.oreui.client.preview.OrePlayerAppearance;
@@ -11,26 +10,14 @@ import com.kyivsec.oreui.client.widget.OrePlayerPreview;
 import com.kyivsec.oreui.client.widget.OreToggle;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ScreenEvent;
 
-/** Generic model/animation demonstration, available before joining any world. */
-@EventBusSubscriber(modid = OreUi.ID, value = Dist.CLIENT)
+/** Opt-in model/animation example; does not add controls to Minecraft screens. */
 public final class OrePlayerPreviewDemo {
     private OrePlayerPreviewDemo() {}
     private static Component text(String key) { return Component.translatable("oreui.preview.demo." + key); }
-
-    @SubscribeEvent public static void titleScreen(ScreenEvent.Init.Post event) {
-        if (!(event.getScreen() instanceof TitleScreen screen)) return;
-        int width = Math.min(104, Math.max(1, screen.width - 16));
-        event.addListener(new OreButton(screen.width - width - 8, 8, width, 22, text("open"), OrePalette.GENERAL, button -> open()));
-    }
 
     public static void open() {
         Minecraft.getInstance().pushGuiLayer(new OreGridScreen(text("title"), OreMenuPresets.Kind.SIMPLE, screen -> {

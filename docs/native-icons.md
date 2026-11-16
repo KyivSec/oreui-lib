@@ -32,4 +32,4 @@ Only `package_16.png` remains as the fallback for `OreIcons.PACKAGE`. `OreIcons.
 
 ## Gallery
 
-`/oreui test` → **Media** browses all 59 icons. It shows native-scale and integer-enlarged previews, canvas/painted dimensions, and a live icon-button example. Loading examples appear below.
+The opt-in [test screen](test-screen.md)'s **Media** page browses all 59 icons. It shows native-scale and integer-enlarged previews, canvas/painted dimensions, and a live icon-button example. Loading examples appear below.
