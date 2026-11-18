@@ -26,6 +26,7 @@ public class OreButton extends Button {
     private boolean verticalContent;
     private Component badge;
     private int iconSize = 16;
+    private boolean explicitIconSize;
     private Font textFont;
 
     /** Optional per-widget font; null restores Minecraft's default renderer. */
@@ -37,9 +38,20 @@ public class OreButton extends Button {
         return textFont == null ? Minecraft.getInstance().font : textFont;
     }
 
+    /** Explicit draw size for both raised and reference appearances, including seamless icon-only buttons. */
     public void setIconSize(int size) {
         if (size < 1) throw new IllegalArgumentException("Icon size must be positive");
         iconSize = size;
+        explicitIconSize = true;
+    }
+
+    int referenceIconSize() {
+        return explicitIconSize ? iconSize : appearance == Appearance.NAVIGATION ? Math.min(14, height) : 8;
+    }
+
+    ReferenceContent referenceIconContent(int left, int right, int labelWidth, int size, int gap, boolean alignLeft) {
+        return referenceContent(getX() + width / 2, iconOnly ? getX() : left, iconOnly ? getRight() : right,
+                iconOnly ? 0 : labelWidth, size, iconOnly ? 0 : gap, alignLeft && !iconOnly);
     }
 
     public void setBadge(Component badge) {
@@ -64,6 +76,7 @@ public class OreButton extends Button {
         this.appearance = appearance;
     }
 
+    /** Accepts a 16x16 PNG from any resource namespace, or a built-in OreUI icon. Null removes the icon. */
     public void setIcon(ResourceLocation icon, boolean iconOnly) {
         this.icon = icon;
         this.iconOnly = iconOnly;
@@ -274,18 +287,18 @@ public class OreButton extends Button {
         int labelWidth = (int) Math.ceil(font.width(getMessage()) * textScale);
         boolean stacked = verticalContent || appearance == Appearance.SELECTABLE_ICON && !iconOnly;
         if (icon != null && stacked && !iconOnly) {
-            int iconY = contentTop + (contentBottom - contentTop - 20) / 2;
-            OreDrawing.icon(graphics, icon, x + (width - 8) / 2, iconY, 8, color);
-            contentTop = iconY + 12;
+            int size = referenceIconSize();
+            int iconY = contentTop + (contentBottom - contentTop - size - 12) / 2;
+            OreDrawing.icon(graphics, icon, x + (width - size) / 2, iconY, size, color);
+            contentTop = iconY + size + 4;
             contentBottom = contentTop + 8;
             ReferenceContent content = referenceContent(x + width / 2, left, right, labelWidth, 0, 0, false);
             left = content.textLeft();
             right = content.textRight();
         } else if (icon != null) {
-            int size = appearance == Appearance.NAVIGATION ? Math.min(14, height) : 8;
+            int size = referenceIconSize();
             int gap = appearance == Appearance.NAVIGATION ? 6 : 4;
-            ReferenceContent content = referenceContent(x + width / 2, left, right, iconOnly ? 0 : labelWidth,
-                    size, iconOnly ? 0 : gap, alignLeft && !iconOnly);
+            ReferenceContent content = referenceIconContent(left, right, labelWidth, size, gap, alignLeft);
             int iconY = contentTop + (contentBottom - contentTop - size) / 2;
             OreDrawing.icon(graphics, icon, content.iconX(), iconY, size, color);
             left = content.textLeft();

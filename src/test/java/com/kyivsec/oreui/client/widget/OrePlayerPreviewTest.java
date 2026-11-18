@@ -1,7 +1,11 @@
 package com.kyivsec.oreui.client.widget;
 
 import com.kyivsec.oreui.client.preview.OrePlayerAppearance;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -84,5 +88,64 @@ class OrePlayerPreviewTest {
         assertEquals(progress, preview.standalonePose(0, 0, 0).swingProgress());
         preview.setAppearance(appearance(OrePlayerAppearance.Model.SLIM));
         assertTrue(preview.hasModel());
+    }
+
+    @Test void compatibleAppearanceModeIsOptInAndChangingItPreservesTheDraftAndCamera() {
+        var skin = appearance(OrePlayerAppearance.Model.CLASSIC);
+        var preview = new OrePlayerPreview(Component.literal("Player"), 160, skin);
+        assertEquals(OrePlayerPreview.AppearanceRendering.STANDALONE, preview.getAppearanceRendering());
+        preview.setRotation(12, 42, 0);
+        preview.focusView(0.75F, 3);
+        preview.setAppearanceRendering(OrePlayerPreview.AppearanceRendering.PLAYER_RENDERER);
+        assertFalse(preview.isStandalone());
+        assertSame(skin, preview.getAppearance());
+        assertTrue(preview.hasModel()); // The no-world fallback is always available for a supplied appearance.
+        var changed = appearance(OrePlayerAppearance.Model.SLIM);
+        preview.setAppearance(changed);
+        assertEquals(OrePlayerPreview.AppearanceRendering.PLAYER_RENDERER, preview.getAppearanceRendering());
+        assertSame(changed, preview.getAppearance());
+        assertEquals(42, preview.getYaw());
+        assertEquals(12, preview.getPitch());
+        assertEquals(3, preview.getModelScale());
+        assertEquals(0.75F, preview.getFocusY());
+        preview.releaseRenderResources();
+        assertSame(changed, preview.getAppearance());
+        preview.setAppearanceRendering(OrePlayerPreview.AppearanceRendering.STANDALONE);
+        assertTrue(preview.isStandalone());
+        assertThrows(NullPointerException.class, () -> preview.setAppearanceRendering(null));
+    }
+
+    @Test void compatibilityModeFallsBackToStandaloneOnlyWhenTheWorldIsUnavailable() {
+        var compatible = OrePlayerPreview.AppearanceRendering.PLAYER_RENDERER;
+        var standalone = OrePlayerPreview.AppearanceRendering.STANDALONE;
+        assertTrue(compatible.usesStandalone(false));
+        assertFalse(compatible.usesStandalone(true));
+        assertTrue(standalone.usesStandalone(false));
+        assertTrue(standalone.usesStandalone(true));
+    }
+
+    @Test void rendererSkinUsesTheDraftTextureAndCorrectArmVariantWithoutBorrowingCapes() {
+        for (var variant : OrePlayerAppearance.Model.values()) {
+            var appearance = appearance(variant);
+            var skin = OrePlayerPreview.appearanceSkin(appearance);
+            assertEquals(appearance.skin(), skin.texture());
+            assertEquals(variant == OrePlayerAppearance.Model.SLIM ? PlayerSkin.Model.SLIM : PlayerSkin.Model.WIDE, skin.model());
+            assertNull(skin.capeTexture()); assertNull(skin.elytraTexture());
+            assertNull(skin.textureUrl()); assertFalse(skin.secure());
+        }
+    }
+
+    @Test void previewProfilesDoNotShareTheRealPlayersUuidOrProfileProperties() {
+        var source = new GameProfile(UUID.randomUUID(), "Example");
+        source.getProperties().put("textures", new Property("textures", "source-texture-property"));
+        UUID firstId = UUID.randomUUID(), secondId = UUID.randomUUID();
+        var first = OrePlayerPreview.previewProfile(firstId, source);
+        var second = OrePlayerPreview.previewProfile(secondId, source);
+        assertEquals(source.getName(), first.getName());
+        assertEquals(firstId, first.getId()); assertEquals(secondId, second.getId());
+        assertNotEquals(source.getId(), first.getId()); assertNotEquals(first.getId(), second.getId());
+        assertNotSame(source.getProperties(), first.getProperties());
+        assertTrue(first.getProperties().isEmpty());
+        assertEquals(1, source.getProperties().size());
     }
 }

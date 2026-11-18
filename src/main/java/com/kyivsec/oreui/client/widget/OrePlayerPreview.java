@@ -1,6 +1,8 @@
 package com.kyivsec.oreui.client.widget;
 
 import com.kyivsec.oreui.client.compat.PlayerEquipmentCompat;
+import com.kyivsec.oreui.client.mixin.EntityRenderDispatcherAccessor;
+import com.kyivsec.oreui.client.preview.OreEntityPreviewRenderScope;
 import com.kyivsec.oreui.client.preview.OrePlayerAppearance;
 import com.kyivsec.oreui.client.preview.OrePlayerModel;
 import com.kyivsec.oreui.client.preview.OrePlayerPose;
@@ -8,11 +10,13 @@ import com.kyivsec.oreui.client.preview.OrePlayerRenderContext;
 import com.kyivsec.oreui.client.preview.OreStandalonePlayerRenderer;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.LongSupplier;
@@ -21,6 +25,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -33,8 +38,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.Team;
+import org.joml.Quaternionf;
 
 public class OrePlayerPreview extends OreModelPreview {
+    public enum AppearanceRendering {
+        /** Entity-free, preview-private models and explicit standalone extensions. */
+        STANDALONE,
+        /** Native dispatcher/player renderer and installed mod hooks; standalone fallback without a world. */
+        PLAYER_RENDERER;
+
+        boolean usesStandalone(boolean worldAvailable) {
+            return this == STANDALONE || !worldAvailable;
+        }
+    }
+
+    private final UUID previewId = UUID.randomUUID();
+    private AppearanceRendering appearanceRendering = AppearanceRendering.STANDALONE;
     private final Map<EquipmentSlot, ItemStack> equipment = new EnumMap<>(EquipmentSlot.class);
     private PlayerEquipmentCompat.Snapshot accessories = PlayerEquipmentCompat.empty();
     private HumanoidArm mainArm = HumanoidArm.RIGHT;
@@ -71,17 +90,28 @@ public class OrePlayerPreview extends OreModelPreview {
         setAppearance(appearance);
     }
 
-    /** Selects standalone rendering; appearances and their borrowed texture IDs may be shared. */
+    /** Updates the draft skin/model without changing the selected renderer or resetting an entity's animations. */
     public void setAppearance(OrePlayerAppearance appearance) {
         this.appearance = Objects.requireNonNull(appearance);
-        player = null;
+        if (player != null) player.setAppearance(appearance);
     }
     public OrePlayerAppearance getAppearance() { return appearance; }
-    public boolean isStandalone() { return appearance != null; }
+    /** Reports the configured mode; PLAYER_RENDERER can still fall back to standalone without a world. */
+    public boolean isStandalone() { return appearance != null && appearanceRendering == AppearanceRendering.STANDALONE; }
+
+    public AppearanceRendering getAppearanceRendering() { return appearanceRendering; }
+
+    public void setAppearanceRendering(AppearanceRendering rendering) {
+        Objects.requireNonNull(rendering);
+        if (appearanceRendering == rendering) return;
+        appearanceRendering = rendering;
+        releaseRenderResources();
+    }
 
     /** Returns to the original local-profile/entity renderer; stored equipment snapshots are retained. */
     public void useEntityRendering() {
         appearance = null;
+        if (player != null) player.setAppearance(null);
         standaloneSwingTicks = -1;
         standalone.clear();
     }
@@ -209,13 +239,35 @@ public class OrePlayerPreview extends OreModelPreview {
             return false;
         }
         if (player == null || player.level() != minecraft.level) {
-            player = new PreviewPlayer(minecraft.level, minecraft.player.getGameProfile());
+            player = new PreviewPlayer(minecraft.level, previewProfile(previewId, minecraft.player.getGameProfile()),
+                    minecraft.player.getSkin(), appearance);
+            // World-dependent resource-pack predicates see a sensible location, but no entity is spawned or ticked in the world.
+            player.setPos(minecraft.player.getX(), minecraft.player.getY(), minecraft.player.getZ());
+            player.xo = player.xOld = player.getX();
+            player.yo = player.yOld = player.getY();
+            player.zo = player.zOld = player.getZ();
             applyEquipment();
             player.crouch(crouching);
             if (usingHand != null) player.beginUse(usingHand);
             if (pendingSwing) startSwing();
         }
         return true;
+    }
+
+    static GameProfile previewProfile(UUID previewId, GameProfile source) {
+        // UUID-keyed animation caches must not treat a UI draft as the actual local player.
+        return new GameProfile(previewId, source.getName());
+    }
+
+    static PlayerSkin appearanceSkin(OrePlayerAppearance appearance) {
+        return new PlayerSkin(appearance.skin(), null, null, null,
+                appearance.model() == OrePlayerAppearance.Model.SLIM ? PlayerSkin.Model.SLIM : PlayerSkin.Model.WIDE, false);
+    }
+
+    private boolean renderStandalone() {
+        if (appearance == null) return false;
+        boolean worldAvailable = appearanceRendering != AppearanceRendering.STANDALONE && preparePlayer();
+        return appearanceRendering.usesStandalone(worldAvailable);
     }
 
     private void startSwing() {
@@ -238,7 +290,7 @@ public class OrePlayerPreview extends OreModelPreview {
 
     @Override
     protected void tickModel() {
-        if (isStandalone()) {
+        if (renderStandalone()) {
             if (swingCooldown > 0) swingCooldown--;
             if (standaloneSwingTicks >= 0 && ++standaloneSwingTicks >= 6) standaloneSwingTicks = -1;
             if (pendingSwing || swingLoop && swingCooldown == 0) startStandaloneSwing();
@@ -256,7 +308,7 @@ public class OrePlayerPreview extends OreModelPreview {
 
     @Override
     protected boolean hasModel() {
-        return isStandalone() || preparePlayer();
+        return appearance != null || preparePlayer();
     }
 
     @Override
@@ -273,7 +325,7 @@ public class OrePlayerPreview extends OreModelPreview {
     protected void renderModel(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         float lookYaw = followMouse && isHovered() ? Mth.clamp((getX() + width / 2.0F - mouseX) * 0.5F, -35, 35) : 0;
         float lookPitch = followMouse && isHovered() ? Mth.clamp((mouseY - getY() - height / 2.0F) * 0.5F, -25, 25) : 0;
-        if (isStandalone()) {
+        if (renderStandalone()) {
             standalone.render(graphics, Minecraft.getInstance().getEntityModels(), appearance,
                     standalonePose(partialTick, lookYaw, lookPitch), poseModifier, context -> {
                         for (var layer : List.copyOf(standaloneLayers)) {
@@ -285,22 +337,48 @@ public class OrePlayerPreview extends OreModelPreview {
             return;
         }
         player.yHeadRot = lookYaw;
+        player.yHeadRotO = lookYaw;
         player.setXRot(lookPitch);
+        player.xRotO = lookPitch;
         graphics.pose().translate(0, -player.getBbHeight() / 2.0F, 0);
         Lighting.setupForEntityInInventory();
-        Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player).render(player, 0, partialTick,
-                graphics.pose(), graphics.bufferSource(), LightTexture.FULL_BRIGHT);
+        var dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        Quaternionf camera = new Quaternionf().rotationXYZ(getPitch() * Mth.DEG_TO_RAD,
+                getYaw() * Mth.DEG_TO_RAD, getRoll() * Mth.DEG_TO_RAD).conjugate();
+        try (var ignored = new OreEntityPreviewRenderScope((EntityRenderDispatcherAccessor) dispatcher, camera)) {
+            // Enter the dispatcher as well as the player renderer: ETF/EMF establish their entity context here.
+            try {
+                RenderSystem.runAsFancy(() -> dispatcher.render(player, 0, 0, 0, 0, partialTick,
+                        graphics.pose(), graphics.bufferSource(), LightTexture.FULL_BRIGHT));
+            } finally { graphics.flush(); }
+        }
     }
 
     private static final class PreviewPlayer extends RemotePlayer {
         private final PlayerTeam previewTeam;
+        private final PlayerSkin accountSkin;
+        private OrePlayerAppearance appearance;
+        private PlayerSkin skin;
 
-        private PreviewPlayer(ClientLevel level, GameProfile profile) {
+        private PreviewPlayer(ClientLevel level, GameProfile profile, PlayerSkin accountSkin, OrePlayerAppearance appearance) {
             super(level, profile);
+            this.accountSkin = accountSkin;
+            setAppearance(appearance);
             previewTeam = new Scoreboard().addPlayerTeam("oreui_preview");
             previewTeam.setNameTagVisibility(Team.Visibility.NEVER);
             setSilent(true);
             setOnGround(true);
+            // Construction uses spawn rotation; the preview camera owns orientation instead.
+            setYRot(0); yRotO = 0; yBodyRot = yBodyRotO = 0; yHeadRot = yHeadRotO = 0;
+        }
+
+        @Override public PlayerSkin getSkin() {
+            return skin;
+        }
+
+        private void setAppearance(OrePlayerAppearance appearance) {
+            this.appearance = appearance;
+            skin = appearance == null ? accountSkin : appearanceSkin(appearance);
         }
 
         @Override
@@ -320,7 +398,7 @@ public class OrePlayerPreview extends OreModelPreview {
 
         @Override
         public boolean isModelPartShown(PlayerModelPart part) {
-            return true;
+            return appearance == null || appearance.parts().contains(part);
         }
 
         private void equip(EquipmentSlot slot, ItemStack item) {

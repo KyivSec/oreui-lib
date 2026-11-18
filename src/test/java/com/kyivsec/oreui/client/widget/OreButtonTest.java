@@ -3,14 +3,42 @@ package com.kyivsec.oreui.client.widget;
 import com.kyivsec.oreui.client.style.OrePalette;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OreButtonTest {
+    @Test void explicitIconSizesAreHonoredByEveryReferenceAppearanceWithoutChangingDefaults() {
+        for (var appearance : OreButton.Appearance.values()) {
+            if (appearance == OreButton.Appearance.RAISED) continue;
+            OreButton button = new OreButton(0, 0, 24, 22, Component.literal("Camera"), OrePalette.GENERAL, ignored -> {});
+            button.setAppearance(appearance);
+            assertEquals(appearance == OreButton.Appearance.NAVIGATION ? 14 : 8, button.referenceIconSize());
+            button.setIconSize(16);
+            assertEquals(16, button.referenceIconSize());
+            button.setIconSize(12);
+            assertEquals(12, button.referenceIconSize());
+            assertThrows(IllegalArgumentException.class, () -> button.setIconSize(0));
+        }
+    }
+
+    @Test void externalSixteenPixelIconsAreCenteredInCompactIconOnlyButtons() {
+        OreButton button = new OreButton(10, 20, 24, 22, Component.literal("Head"), OrePalette.GENERAL, ignored -> {});
+        button.setAppearance(OreButton.Appearance.SEAMLESS);
+        button.setIcon(ResourceLocation.fromNamespaceAndPath("another_mod", "textures/gui/head.png"), true);
+        button.setIconSize(16);
+        var content = button.referenceIconContent(16, 28, 60, button.referenceIconSize(), 4, false);
+        assertEquals(14, content.iconX());
+        assertEquals(22, content.iconX() + button.referenceIconSize() / 2);
+        assertEquals(content.textLeft(), content.textRight());
+        assertEquals(16, content.textLeft() - content.iconX());
+    }
+
     @Test
     void iconAndLabelAreCenteredAsOneGroupAndLongLabelsStayPadded() {
         int width = 140;

@@ -5,6 +5,7 @@ import com.kyivsec.oreui.client.widget.OreButton;
 import com.kyivsec.oreui.client.widget.OreColorSquare;
 import com.kyivsec.oreui.client.widget.OreEditBox;
 import com.kyivsec.oreui.client.widget.OreHueSlider;
+import com.kyivsec.oreui.client.widget.OreModelPreview;
 import com.kyivsec.oreui.client.widget.OreScrollbar;
 import com.kyivsec.oreui.client.widget.OreSlider;
 import com.kyivsec.oreui.client.widget.OreTable;
@@ -21,6 +22,7 @@ public final class OreWidgetSupport {
         if (widget instanceof OreHueSlider hue) hue.cancelDrag();
         if (widget instanceof OreScrollbar scrollbar) scrollbar.cancelDrag();
         if (widget instanceof OreSlider slider) slider.cancelDrag();
+        if (widget instanceof OreModelPreview preview) preview.cancelDrag();
     }
 
     public static void outline(AbstractWidget widget, GuiGraphics graphics) {

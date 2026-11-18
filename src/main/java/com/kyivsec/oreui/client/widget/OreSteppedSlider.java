@@ -65,13 +65,15 @@ public class OreSteppedSlider extends OreSlider {
 
     @Override
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        var font = Minecraft.getInstance().font;
-        int color = active ? OreDrawing.TEXT : 0xFFD0D1D4;
-        int labelRight = Math.min(getRight() - 28, getX() + (int) Math.ceil(font.width(rangeLabel) * OreDrawing.SMALL_TEXT));
-        OreDrawing.scaledText(graphics, font, rangeLabel, getX(), getY(), labelRight, getY() + 10, color, OreDrawing.SMALL_TEXT);
-        OreDrawing.scaledText(graphics, font, Component.literal(Integer.toString(getStep())), getRight() - 24, getY(),
-                getRight(), getY() + 10, color, OreDrawing.SMALL_TEXT);
-        int y = getY() + height - 11;
+        if (isLabelVisible()) {
+            var font = Minecraft.getInstance().font;
+            int color = active ? OreDrawing.TEXT : 0xFFD0D1D4;
+            int labelRight = Math.min(getRight() - 28, getX() + (int) Math.ceil(font.width(rangeLabel) * OreDrawing.SMALL_TEXT));
+            OreDrawing.scaledText(graphics, font, rangeLabel, getX(), getY(), labelRight, getY() + 10, color, OreDrawing.SMALL_TEXT);
+            OreDrawing.scaledText(graphics, font, Component.literal(Integer.toString(getStep())), getRight() - 24, getY(),
+                    getRight(), getY() + 10, color, OreDrawing.SMALL_TEXT);
+        }
+        int y = trackY();
         int edge = active ? OreDrawing.BACKGROUND : 0xFF8C8D90;
         graphics.fill(getX(), y, getRight(), y + 6, edge);
         OreDrawing.bevel(graphics, getX() + 1, y + 1, width - 2, 4,
@@ -93,10 +95,15 @@ public class OreSteppedSlider extends OreSlider {
     }
 
     @Override
+    protected int trackY() {
+        return isLabelVisible() ? getY() + height - 11 : super.trackY();
+    }
+
+    @Override
     public void renderOutline(GuiGraphics graphics) {
         if (visible && active && isFocused()) {
             int x = getX() + (int) Math.round(getProgress() * Math.max(0, width - 15));
-            OreDrawing.buttonFocus(graphics, x, getY() + height - 15, 15, 15);
+            OreDrawing.buttonFocus(graphics, x, trackY() - 4, 15, 15);
         }
     }
 }

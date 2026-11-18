@@ -23,6 +23,14 @@ public class OreLabel extends AbstractWidget {
     private int color = 0xFF9DDF77;
     private boolean colorSwatch;
     private float plainTextScale = 1;
+    private boolean textCentered;
+
+    /** Centers the plain text block within the label, independently of layout-cell alignment. */
+    public void setTextCentered(boolean centered) { textCentered = centered; }
+
+    int plainTextX(int textWidth) {
+        return getX() + (textCentered ? (width - textWidth) / 2 : 0);
+    }
 
     public void setPlainTextScale(float scale) {
         if (!Float.isFinite(scale) || scale <= 0) throw new IllegalArgumentException("Text scale must be positive and finite");
@@ -122,7 +130,8 @@ public class OreLabel extends AbstractWidget {
         int textHeight = (int) Math.ceil(lines.getLineCount() * font.lineHeight * textScale());
         graphics.pose().pushPose();
         try {
-            graphics.pose().translate(getX() + inset, getY() + (height - textHeight) / 2, 0);
+            graphics.pose().translate(decoration == Decoration.PLAIN ? plainTextX(textWidth) : getX() + inset,
+                    getY() + (height - textHeight) / 2, 0);
             graphics.pose().scale(textScale(), textScale(), 1);
             lines.renderLeftAlignedNoShadow(graphics, 0, 0, font.lineHeight, textColor);
         } finally {

@@ -17,7 +17,7 @@ See [Custom UI fonts](fonts.md) for application-supplied fonts, per-widget selec
 | `OreSteppedSlider` | Equal increments, optionally visible separators. Pointer/programmatic values snap; arrows move one step and Home/End select endpoints. `OreSlider` provides a continuous range. |
 | `OreTooltip` | Top/bottom/left/right tails. `OreScreen` retains native tooltip scheduling and narration. |
 | `OreModalScreen` | Back/title/close header, scrollable body, fixed actions and optional confirmation. `OrePopupScreen` provides a standard popup. |
-| `OreImageCard` | Caller-supplied, aspect-preserving center-cropped image, tags, caption/count and optional independent footer action. `OreCard` provides a text-only card. |
+| `OreImageCard` | Caller-supplied, aspect-preserving center-cropped image, tags, caption/count and optional independent footer action. `OreCard` provides a text card or a selectable preview/caption card. |
 | `OreScrollbar` | Vertical/horizontal scrolling, dragging, track clicking and keyboard input. |
 | `OreToggle` | Checkbox, radio and switch variants, including disabled state. Checkboxes support palettes and an indeterminate state. |
 
@@ -56,6 +56,41 @@ For a standalone scrollbar, `setMetrics(contentSize, viewSize, offset)` silently
 `OreNavBar` is a `LayoutElement` and `Renderable`: register its background using `addRenderableOnly(navbar)` and controls using `navbar.visitWidgets(this::addRenderableWidget)`. Set its position/width in screen layout. `OreImageCard` is a native `LinearLayout`; register child widgets via `visitWidgets`. `OreColumn` / `OreSection` size it automatically. Ordinary widgets work in vanilla screens; `OreScreen` supplies the custom tooltip and final focus-outline pass.
 
 ## Buttons, selection and navigation
+
+`OreSlider.setLabelVisible(false)` hides the visible label/value and centers its track in a compact widget (for example, 18 pixels high). Its message, narration, keyboard input and pointer mapping are unchanged. `isLabelVisible()` reports the setting. `OreSteppedSlider` supports the same mode. Existing sliders show labels by default.
+
+`OreValueButton(label, value, onPress)` is a compact 20-pixel label/value action row with a chevron, hover/focus selection and native button input. `setValue(Component)` updates the displayed value and accessible message; `setSwatchColor(Integer)` optionally replaces the visible value with a color swatch (null restores text). Keep the value component synchronized with the swatch for narration/tooltips. It is useful for focused settings submenus without permanently expanded controls.
+
+`OreLabel.setTextCentered(true)` centers a plain label's text block inside its widget independently of grid-cell alignment. Plain labels remain left-aligned by default. This is useful for fixed-width page counters whose widgets are already centered in a layout cell.
+
+### Selectable preview cards
+
+The original text-only `OreCard(font, title, body, accent, onPress)` constructor is unchanged. For selectable catalogue entries with room for images or future 3D content:
+
+```java
+OreCard card = new OreCard(font, title, 64,
+        (graphics, bounds, mouseX, mouseY, partialTick) -> {
+            // Draw caller-owned preview content inside these screen-space bounds.
+        }, button -> selectOption());
+card.setWidth(112);
+card.setSelected(isCurrentOption);
+```
+
+This overload creates one button/focus target across the preview and caption, with a green selected caption, native keyboard/pointer activation, a focus outline and the title as its accessible message. It adds no tooltip, tags or independent footer actions. The initial height is `previewHeight + PREVIEW_CAPTION_HEIGHT + 2`; the caption is 22 pixels high. `previewBounds()` and `captionBounds()` are recomputed after movement/resizing, so a bounded grid can assign the final card height. The callback is clipped to the preview area and receives a balanced pose scope; buffered draws are flushed before the clip is released. It must balance its own nested rendering state.
+
+Preview cards paint a complete one-pixel frame on all four sides **after** their content and caption. This permanent frame is distinct from the focus outline. Right/bottom borders use the same visible frame color as the top/left, not background-colored bevel shading; selection colors the whole perimeter green.
+
+Preview widgets/models remain caller-owned: the card does not create entities, tick nested previews, route input to them or release their resources. Use non-interactive content and service/release any future 3D previews in the owning screen. This keeps catalogue selection separate from orbit controls. Existing text-only card sizing/rendering remains unchanged.
+
+`OreButton.setIcon(ResourceLocation, iconOnly)` accepts standalone **16×16 PNGs from any mod/resource namespace**, not just OreUI's icon enums. Keep app-specific artwork in the app's own `assets/<mod_id>/textures/...` tree; no library registration or asset copy is needed. For example:
+
+```java
+button.setIcon(ResourceLocation.fromNamespaceAndPath("your_mod", "textures/gui/icons/head.png"), true);
+button.setAppearance(OreButton.Appearance.SEAMLESS);
+button.setIconSize(16);
+```
+
+Explicit `setIconSize` values apply to all button appearances, including seamless and stacked reference controls. Icon-only content is centered across the button rather than constrained by text padding. Without an explicit size, the previous raised/reference icon sizes remain unchanged. Setting an icon does not remove the button's message/narration or automatically add a tooltip.
 
 `OreButton.setAppearance` selects raised, seamless, selection or navigation rendering. `setSelected` on a default raised button enables selection appearance; `setBadge(Component)` attaches a count badge. `setIcon`, `setIconSize` and `setVerticalContent` configure content without changing activation behavior. Callbacks run on press, not release. `cancelPress` clears transient input state.
 

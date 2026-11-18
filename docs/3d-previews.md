@@ -6,10 +6,46 @@ The client-only preview widgets use Minecraft 1.21.1's native item/block rendere
 
 - `OreItemPreview(Component label, ItemStack item, int height)` renders an item or block's item model. It copies its input stack. The default display context is `GROUND`; use `setDisplayContext(ItemDisplayContext.GUI)` for the model's inventory presentation. Native model geometry and custom item renderers are retained; a flat sprite does not become a full 3D mesh. Fitting uses the model's declared display-transform scale; unusual custom models can be adjusted with `setModelScale`.
 - `OreBlockPreview(Component label, BlockState state, int height)` renders a specific block state rather than its inventory representation, including properties such as stair/slab orientation or a furnace's lit state. It uses the single-block renderer with full-bright lighting and empty model data. This is not a miniature world: world-dependent neighbor/model data, fluids and arbitrary block-entity NBT/animations are not simulated.
-- `OrePlayerPreview(Component label, int height)` preserves the entity-based renderer: a separate, unregistered `RemotePlayer` using the current player's profile/skin. It requires a loaded client world/player; otherwise it shows a placeholder. It never uses the actual player as the animation target.
-- `OrePlayerPreview(Component label, int height, OrePlayerAppearance appearance)` selects a **standalone** native `PlayerModel` renderer. It works on the main menu with no world/local player, fake world, entity, profile lookup or skin download. `setAppearance(appearance)` switches an existing widget to this path; `useEntityRendering()` restores the original path and its stored equipment snapshot. `isStandalone()` reports the path; `getAppearance()` is null on the entity path.
+- `OrePlayerPreview(Component label, int height)` preserves the entity-based renderer: a separate, unregistered `RemotePlayer` with the current player's name/skin but a preview-private UUID. It requires a loaded client world/player; otherwise it shows a placeholder. It never uses the actual player as the animation target.
+- `OrePlayerPreview(Component label, int height, OrePlayerAppearance appearance)` defaults to a **standalone** native `PlayerModel` renderer. It works on the main menu with no world/local player, fake world, entity, profile lookup or skin download. `setAppearance(appearance)` updates the appearance using the selected mode; `useEntityRendering()` removes the appearance override and restores account-skin/entity rendering with the stored equipment snapshot. `getAppearance()` is null when there is no appearance override.
 
-All previews have native widget position/size, labels/narration and optional inset backgrounds. They do not take keyboard focus or consume clicks. They can have a normal native tooltip assigned with `setTooltip`.
+### Renderer-backed appearances (EMF and player-animation hooks)
+
+```java
+OrePlayerPreview preview = new OrePlayerPreview(label, 180, appearance);
+preview.setAppearanceRendering(OrePlayerPreview.AppearanceRendering.PLAYER_RENDERER);
+```
+
+`PLAYER_RENDERER` uses the normal `EntityRenderDispatcher` and installed player renderer, including `setupAnim`, entity render events, renderer replacements and render layers. This provides the entity context needed by ETF/EMF and render-driven player animation mods, without a compile/runtime dependency on those optional mods. The preview entity overrides `getSkin()` and visible skin parts from `OrePlayerAppearance`, so draft texture and Classic/Slim changes reach the native renderer. Appearance updates retain the existing preview entity and its animation state; the camera is unaffected.
+
+Each widget uses its own unregistered `RemotePlayer`, private UUID/inventory/team, and a snapshot of the source player's name/account skin. UUID-keyed mod animation state is not borrowed from the actual player. The initial position matches the source for world-dependent resource-pack predicates; no movement, world/entity ticks, game actions or networking are simulated. Dispatcher camera orientation, shadows and debug-hitbox state are temporarily overridden and restored even when rendering fails. Renderer models themselves belong to the normal dispatcher, not the standalone model cache.
+
+Without a loaded client level/player, a supplied appearance automatically uses standalone rendering; the original no-appearance constructor still shows its unavailable placeholder. `STANDALONE` remains the default. `getAppearanceRendering()` reports the selected appearance mode; `isStandalone()` reports whether a supplied appearance is configured as standalone, not whether the compatible mode is temporarily falling back. Switching the selected mode releases entity/model caches but retains camera, appearance and equipment snapshots. Standalone model factories, pose modifiers and custom layers run only on the standalone path/fallback, not alongside the normal player renderer.
+
+**Compatibility limits:** EMF still needs ETF, player CEM assets and settings that allow remote players (`onlyClientPlayerModel` must not exclude the preview). A mob-only resource pack does not supply player animations. UUID-dependent random model choices can differ from the real player. Mods restricted to `LocalPlayer`/the actual camera entity, attachments keyed to the actual account UUID, tick-only animation controllers or server-triggered emotes need dedicated adapters. Third-party hooks are not sandboxed, and their own clocks may ignore OreUI animation pause. Native dispatch is a compatibility entry point, not a guarantee for every animation mod; verify specific mod/pack combinations in-game. No animation state is copied from the live player.
+
+All previews have native widget position/size, labels/narration and optional inset backgrounds. By default they do not take keyboard focus or consume clicks. Opt-in orbit/zoom interaction is described below. They can have a normal native tooltip assigned with `setTooltip`.
+
+## Optional orbit and zoom
+
+```java
+preview.setRotation(-8, -25, 0);
+preview.setInteractive(true); // Records these transforms as the home/reset view.
+preview.setZoomToCursor(false); // Optional: keep zoom centered on the current model focus.
+preview.setCameraTransitionDuration(0.3); // Optional: smooth 300 ms preset/reset transitions.
+preview.focusView(0.75F, 3);  // Standalone player head framing; preserves orientation.
+preview.resetView();         // Restores the recorded camera, not appearance or equipment.
+```
+
+`setInteractive(true)` works on item, block and player previews. Left-drag rotates through continuous horizontal turns with vertical tilt clamped to ±60 degrees. Wheel zoom is bounded to 0.75–4 times the fitted model size, anchoring the point under the cursor; it is accepted only inside the preview. `focusView(targetY,zoom)` uses a model-space vertical target and recenters screen offsets without changing orientation. The standalone player's head is approximately `0.75` above its model center; different models need their own target.
+
+`setZoomToCursor(false)` switches wheel and keyboard zoom to model-centered zoom: screen offsets stay zero and the current model-space focus remains unchanged, regardless of mouse position. Cursor anchoring remains the default for existing consumers.
+
+Presets and reset are immediate by default. `setCameraTransitionDuration(seconds)` opts into smoothstep ease-in/out for `focusView` and `resetView`, including focus, zoom, offsets and shortest-path yaw/roll interpolation. The duration must be finite and nonnegative; zero restores immediate changes. Camera transitions use monotonic wall time and advance on both render frames and host ticks, independently of world partial ticks or stopped pose animation. Retargeting starts from the currently interpolated view. Direct camera setters, pointer rotation/zoom and keyboard rotation/zoom interrupt the transition at that view; focus loss/drag cancellation alone does not interrupt it, so clicking a preset button can move focus safely. Changing the transition duration or interactive mode also stops a pending transition at its current view.
+
+Interactive previews participate in Tab navigation. Focused arrow keys rotate (Shift uses larger steps), `+`/`-` zoom and Home resets the view. `cancelDrag`, focus loss, hidden/deactivated hosts, and the shared `OreWidgetSupport.cancel` hook release pointer capture without resetting the view. Input must begin inside the preview, but an already-captured drag can continue outside until release. Camera state is private to each widget and unaffected by replacing its appearance.
+
+`OreScreen` scrolls only its content viewport. When a preview is fixed chrome outside that viewport, route wheel input to `preview.mouseScrolled(...)` first in the owning screen, then fall back to `super.mouseScrolled(...)`. Never forward input through an overlay/popover. The character editor demonstrates this routing. Rendering still clips all zoomed content to the widget bounds.
 
 ## Standalone player appearance
 

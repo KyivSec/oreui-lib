@@ -12,6 +12,20 @@ public class OreSlider extends AbstractSliderButton {
     private final Component label;
     private final DoubleConsumer onChange;
     private boolean dragging;
+    private boolean labelVisible = true;
+
+    /** Track-only sliders retain their message for narration and native keyboard interaction. */
+    public void setLabelVisible(boolean visible) {
+        labelVisible = visible;
+    }
+
+    public boolean isLabelVisible() {
+        return labelVisible;
+    }
+
+    protected int trackY() {
+        return labelVisible ? getY() + height - 12 : getY() + Math.max(0, (height - 15) / 2) + 4;
+    }
 
     @Override
     public void onClick(double mouseX, double mouseY) {
@@ -99,9 +113,11 @@ public class OreSlider extends AbstractSliderButton {
 
     @Override
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        OreDrawing.scrollingText(graphics, Minecraft.getInstance().font, getMessage(),
-                getX() + 5, getY() + 2, getX() + width - 5, getY() + 16, active ? OreDrawing.TEXT : OreDrawing.MUTED);
-        int trackY = getY() + height - 12;
+        if (labelVisible) {
+            OreDrawing.scrollingText(graphics, Minecraft.getInstance().font, getMessage(),
+                    getX() + 5, getY() + 2, getX() + width - 5, getY() + 16, active ? OreDrawing.TEXT : OreDrawing.MUTED);
+        }
+        int trackY = trackY();
         int handleX = getX() + (int) Math.round(value * Math.max(0, width - 15));
         OreDrawing.track(graphics, getX(), trackY, width, value, active);
         int handleY = trackY - 4;
@@ -116,7 +132,7 @@ public class OreSlider extends AbstractSliderButton {
     public void renderOutline(GuiGraphics graphics) {
         if (visible && active && isFocused()) {
             int handleX = getX() + (int) Math.round(value * Math.max(0, width - 15));
-            OreDrawing.buttonFocus(graphics, handleX, getY() + height - 16, 15, 15);
+            OreDrawing.buttonFocus(graphics, handleX, trackY() - 4, 15, 15);
         }
     }
 }
