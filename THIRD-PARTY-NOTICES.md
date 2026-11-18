@@ -24,7 +24,7 @@ An earlier pass imported **47 icon names in five sizes (235 variants)** from `of
 
 `assets/oreui_lib/icon-attribution.json` in the JAR records the retained `textures/icons/package_16.png` fallback's original SVG/PNG filename, node, changes and SHA-256. The other 236 old PNG files, including unsuffixed Add/Search aliases, are no longer packaged. Legacy Java enum/size-based APIs redirect to current textures rather than retaining duplicate raster resources.
 
-The user-PSD import below supplies current static defaults and the 59-icon Media browser. Minecraft's stone texture is referenced from the game's own resources, not redistributed. No font binaries or export tooling are bundled. The code's MIT license does not replace design or font licenses. Credits remain discoverable in mod metadata and this packaged notice; the gallery has no About page.
+The user-PSD import below supplies current static defaults and the 59-icon Media browser. Minecraft's stone texture is referenced from the game's own resources, not redistributed. No font binaries or export tooling are bundled. The code's GPL-3.0-only license does not replace design or font licenses. Credits remain discoverable in mod metadata and this packaged notice; the gallery has no About page.
 
 The 3D previews page uses Minecraft's runtime item/block/player models, the current player's skin and the game's native animation/rendering systems. These resources are referenced at runtime, not copied into this library. Its preview surfaces and controls reuse the existing Ore adaptations; no new third-party images, model files, skins, animation assets or rendering dependencies are redistributed.
 
@@ -42,7 +42,7 @@ At the user's request, additional components are adapted from **OreUI — Unoffi
 
 The earlier community icon/animation atlas and its resource metadata were removed after the user supplied replacement static icons and loading/progress sheets. No icon/animation PNGs from this community file remain packaged. Component-design references and their historical attribution remain relevant. Reference canvases, the example world screenshot and source fonts are not packaged; image-card content is application supplied.
 
-The user authorized use of this reference and conversion of its pixel icons into a sprite. Its upstream authorship and redistribution/license terms have not been independently established. The earlier handout's CC BY 4.0 attribution is **not** asserted to license this separate community file. Confirm those upstream terms before public redistribution; the code's MIT license does not license third-party design assets.
+The user authorized use of this reference and conversion of its pixel icons into a sprite. Its upstream authorship and redistribution/license terms have not been independently established. The earlier handout's CC BY 4.0 attribution is **not** asserted to license this separate community file. Confirm those upstream terms before public redistribution; the code's GPL-3.0-only license does not license third-party design assets.
 
 The mod logo `oreui-logo.png` is the image supplied by the user as `OreUI Lib.png`, copied unchanged for the mod-list icon.
 
@@ -52,7 +52,7 @@ The user supplied `x15_icons.psd` and `x16_icons.psd`, then explicitly requested
 
 The mod includes the cleaned individual PNGs in `assets/oreui_lib/textures/icons/native/`. `assets/oreui_lib/native-icon-attribution.json` records source file/layer names, original PSD hashes, native/painted dimensions, removed off-canvas pixels, documented hand-redraw changes and final PNG hashes. Bag and Large Hashtag were redrawn on the integer grid for consistent visual size/stroke weight; intentional small/large variants remain distinct. No source PSDs or import tooling are bundled in the JAR.
 
-Default static controls use these redraws. Redundant earlier explicit-size PNGs were removed; enum/size-based APIs redirect to current artwork. The redraws were supplied as adaptations of the referenced icon vocabulary; this record does not assert a separate asset license or erase historical upstream attribution/terms. The MIT code license is not a substitute for third-party asset rights.
+Default static controls use these redraws. Redundant earlier explicit-size PNGs were removed; enum/size-based APIs redirect to current artwork. The redraws were supplied as adaptations of the referenced icon vocabulary; this record does not assert a separate asset license or erase historical upstream attribution/terms. The GPL-3.0-only code license is not a substitute for third-party asset rights.
 
 ## User-supplied loading/progress artwork
 

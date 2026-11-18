@@ -6,7 +6,7 @@ Minecraft 1.21.1, NeoForge 21.1.265, Java 21, Gradle 9.2.1, and ModDevGradle 2.0
 
 Identity, artifact coordinates, author, description, and code license are configured in `gradle.properties`. The current coordinates are `com.kyivsec.oreui:oreui-lib:0.1.0`, with mod ID `oreui_lib`. The entrypoint ID must match the property; `verifyArtifact` checks this.
 
-The code is MIT licensed, copyright KyivSec. See `../THIRD-PARTY-NOTICES.md` for separate design attribution. Credits are also visible in the mod metadata and packaged in the JAR.
+The code is licensed under the GNU General Public License version 3.0 only (GPL-3.0-only), copyright (c) 2026 KyivSec. See `../LICENSE` for the full license and `../THIRD-PARTY-NOTICES.md` for separate design attribution. Credits are also visible in the mod metadata and packaged in the JAR.
 
 ## Commands
 
